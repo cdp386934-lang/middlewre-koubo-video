@@ -1,0 +1,52 @@
+# BGM 配置示例
+# 将此配置复制到 config.yaml 的 bgm 节点下即可使用
+
+bgm:
+  enabled: true
+  default_volume: 0.3  # 默认音量 (0.0-2.0)
+  segments:
+    # 示例1: 开场音乐 (0-10秒)
+    - path: "assets/bgm/intro.mp3"
+      start: 0.0
+      end: 10.0
+      volume: 0.5  # 开场音量稍大
+
+    # 示例2: 主体音乐 (10-60秒)
+    - path: "assets/bgm/main.mp3"
+      start: 10.0
+      end: 60.0
+      volume: 0.3  # 使用默认音量
+
+    # 示例3: 结尾音乐 (60秒开始，播放到音频文件结束)
+    - path: "assets/bgm/outro.mp3"
+      start: 60.0
+      end: null  # null 表示播放到音频文件结束
+      volume: 0.4
+
+# 使用说明：
+# 1. path: 音频文件路径（支持相对路径和绝对路径）
+#    - 相对路径相对于项目根目录（input 目录的父目录）
+#    - 绝对路径直接使用
+#
+# 2. start: 开始时间（秒）
+#    - 在视频时间轴上的开始位置
+#
+# 3. end: 结束时间（秒）
+#    - 在视频时间轴上的结束位置
+#    - 设置为 null 表示从 start 时间播放到音频文件结束
+#
+# 4. volume: 音量（0.0-2.0）
+#    - 可选参数，不设置则使用 default_volume
+#    - 0.0 = 静音
+#    - 1.0 = 原始音量
+#    - 2.0 = 两倍音量
+#
+# 5. enabled: 是否启用 BGM 功能
+#    - true: 启用
+#    - false: 禁用（快速开关）
+
+# 注意事项：
+# - 确保音频文件存在，否则该片段会被跳过
+# - end 时间必须大于 start 时间
+# - 多个片段可以重叠播放
+# - 片段按配置顺序添加到草稿

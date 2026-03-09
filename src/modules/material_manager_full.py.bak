@@ -1,0 +1,207 @@
+import json
+from pathlib import Path
+from typing import List, Optional
+from loguru import logger
+
+from src.models.subtitle import SubtitleData
+from src.models.keyword import KeywordData
+
+
+class MaterialManager:
+    """素材管理模块"""
+
+    def __init__(self, config: dict):
+        self.config = config
+        pexels_config = config.get("pexels", {})
+
+        # 检查是否配置了 Pexels
+        self.enabled = bool(pexels_config.get("api_key"))
+
+        if self.enabled:
+            from src.services.pexels_service import PexelsService
+            from src.models.material import Material, MaterialData
+
+            self.pexels_service = PexelsService(pexels_config)
+            self.material_dir = Path(config["paths"].get("materials", "output/materials"))
+            self.material_dir.mkdir(parents=True, exist_ok=True)
+
+            # 配置参数
+            self.max_keywords = pexels_config.get("max_keywords", 5)
+            self.per_keyword = pexels_config.get("per_keyword", 5)
+            self.orientation = pexels_config.get("orientation", "landscape")
+            self.video_quality = pexels_config.get("video_quality", "hd")
+            self.photo_size = pexels_config.get("photo_size", "large")
+        else:
+            logger.warning("Pexels API key未配置，素材管理功能已禁用")
+
+    def manage(self, subtitle_data: SubtitleData = None, keyword_data: KeywordData = None):
+        """
+        管理素材获取流程
+
+        Args:
+            subtitle_data: 字幕数据
+            keyword_data: 关键词数据
+
+        Returns:
+            MaterialData: 素材数据（如果启用）或 None
+        """
+        if not self.enabled:
+            logger.info("素材管理（未启用）")
+            return None
+
+        from src.models.material import MaterialData
+
+        logger.info("开始素材管理")
+
+        # 1. 提取top N关键词
+        top_keywords = self._get_top_keywords(keyword_data, self.max_keywords)
+        logger.info(f"选择了{len(top_keywords)}个关键词进行素材搜索")
+
+        # 2. 为每个关键词搜索素材
+        all_materials = []
+        for keyword_obj in top_keywords:
+            keyword = keyword_obj.keyword
+            logger.info(f"搜索关键词: {keyword}")
+            materials = self._search_materials_for_keyword(keyword)
+
+            # 3. 映射素材到字幕segments
+            for material in materials:
+                self._map_material_to_segments(material, keyword, keyword_data, subtitle_data)
+
+            all_materials.extend(materials)
+
+        material_data = MaterialData(materials=all_materials)
+
+        # 4. 保存元数据
+        metadata_path = self.material_dir / "metadata.json"
+        self._save_metadata(material_data, metadata_path)
+
+        logger.info(f"素材管理完成,共获取{len(all_materials)}个素材")
+        return material_data
+
+    def _get_top_keywords(self, keyword_data: KeywordData, n: int = 5) -> List:
+        """
+        提取重要性最高的N个关键词
+
+        Args:
+            keyword_data: 关键词数据
+            n: 提取数量
+
+        Returns:
+            关键词列表
+        """
+        sorted_keywords = sorted(
+            keyword_data.keywords,
+            key=lambda k: k.importance,
+            reverse=True
+        )
+        return sorted_keywords[:n]
+
+    def _search_materials_for_keyword(self, keyword: str) -> List:
+        """
+        为单个关键词搜索素材
+
+        Args:
+            keyword: 搜索关键词
+
+        Returns:
+            素材列表
+        """
+        from src.models.material import Material
+
+        materials = []
+
+        # 搜索视频
+        videos = self.pexels_service.search_videos(
+            keyword,
+            per_page=self.per_keyword,
+            orientation=self.orientation
+        )
+
+        for video in videos:
+            download_url = self.pexels_service.get_video_file_url(video, self.video_quality)
+            if not download_url:
+                continue
+
+            material = Material(
+                id=video["id"],
+                type="video",
+                keyword=keyword,
+                url=video["url"],
+                download_url=download_url,
+                width=video["width"],
+                height=video["height"],
+                duration=video.get("duration"),
+                photographer=video["user"]["name"],
+                photographer_url=video["user"]["url"]
+            )
+            materials.append(material)
+
+        # 搜索图片
+        photos = self.pexels_service.search_photos(
+            keyword,
+            per_page=self.per_keyword,
+            orientation=self.orientation
+        )
+
+        for photo in photos:
+            download_url = self.pexels_service.get_photo_file_url(photo, self.photo_size)
+            if not download_url:
+                continue
+
+            material = Material(
+                id=photo["id"],
+                type="photo",
+                keyword=keyword,
+                url=photo["url"],
+                download_url=download_url,
+                width=photo["width"],
+                height=photo["height"],
+                photographer=photo["photographer"],
+                photographer_url=photo["photographer_url"]
+            )
+            materials.append(material)
+
+        return materials
+
+    def _map_material_to_segments(
+        self,
+        material,
+        keyword: str,
+        keyword_data: KeywordData,
+        subtitle_data: SubtitleData
+    ) -> None:
+        """
+        将素材映射到对应的字幕segments
+
+        Args:
+            material: 素材对象
+            keyword: 关键词
+            keyword_data: 关键词数据
+            subtitle_data: 字幕数据
+        """
+        # 找到包含该关键词的所有segments
+        matching_segments = []
+        for kw in keyword_data.keywords:
+            if kw.keyword == keyword:
+                matching_segments = kw.segments
+                break
+
+        # 将素材映射到第一个匹配的segment
+        if matching_segments:
+            material.segment_id = matching_segments[0]
+
+    def _save_metadata(self, material_data, output_path: Path) -> None:
+        """
+        保存素材元数据到JSON文件
+
+        Args:
+            material_data: 素材数据
+            output_path: 输出文件路径
+        """
+        try:
+            with open(output_path, "w", encoding="utf-8") as f:
+                json.dump(material_data.model_dump(), f, ensure_ascii=False, indent=2)
+            logger.info(f"素材元数据已保存到: {output_path}")
+        except Exception as e:
+            logger.error(f"保存素材元数据失败: {e}")

@@ -1,0 +1,136 @@
+# 路径配置
+paths:
+  input: "input"
+  output: "output"
+  temp: "temp"
+  logs: "logs"
+  audio: "output/audio"
+  subtitles: "output/subtitles"
+  keywords: "output/keywords"
+  drafts: "output/drafts"
+  materials: "output/materials"
+
+# Whisper ASR 配置
+whisper:
+  model_size: "base"  # tiny, base, small, medium, large
+  language: "zh"
+  device: "cpu"  # cpu or cuda
+  word_timestamps: true
+
+# DeepSeek AI 配置
+deepseek:
+  api_key: "${DEEPSEEK_API_KEY}"
+  base_url: "https://api.deepseek.com"
+  model: "deepseek-chat"
+  temperature: 0.7
+  max_tokens: 2000
+  title:
+    max_length: 18
+    temperature: 0.8
+    max_tokens: 80
+
+# CapCut-mate 配置
+capcut:
+  api_url: "http://localhost:30000"
+  timeout: 30
+  draft_root: "~/Library/Containers/com.lemon.lvpro/Data/Movies/JianyingPro/User Data/Projects/com.lveditor.draft"
+
+# 字幕配置
+subtitle:
+  font_size: 24
+  font_color: "#FFFFFF"
+  keyword_color: "#FFD700"
+  keyword_font_size: 28
+  position: "bottom"
+
+# 口播封面/作者文案配置
+overlay_text:
+  title:
+    enabled: true
+    start: 0.0
+    duration: 4.0
+    font_size: 34
+    text_color: "#FFFFFF"
+    alignment: 1
+    transform_x: 0
+    transform_y: -320
+    has_shadow: true
+  author:
+    enabled: false
+    start: 0.5
+    duration: 4.0
+    name: ""
+    identity: ""
+    name_font_size: 22
+    identity_font_size: 18
+    name_text_color: "#FFFFFF"
+    identity_text_color: "#FFD700"
+    name_alignment: 1
+    identity_alignment: 1
+    name_transform_x: 0
+    identity_transform_x: 0
+    name_transform_y: -430
+    identity_transform_y: -380
+    has_shadow: true
+
+# 关键词提取配置
+keyword:
+  max_count: 10
+  min_frequency: 2
+  prompt_template: |
+    请分析以下视频字幕文本，提取出最重要的关键词。
+
+    要求：
+    1. 提取5-10个最重要的关键词或短语
+    2. 关键词应该是名词、动词或重要的形容词
+    3. 优先提取出现频率高的词语
+    4. 返回JSON格式：[{"word": "关键词", "importance": 0.9}]
+
+    字幕文本：
+    {text}
+
+    请直接返回JSON数组，不要其他说明文字。
+
+# Pexels 素材配置
+pexels:
+  api_key: "${PEXELS_API_KEY}"
+  base_url: "https://api.pexels.com/v1"
+  enabled: false  # 暂时禁用
+  max_keywords: 5
+  per_keyword: 5
+  orientation: "landscape"
+  video_quality: "hd"
+  photo_size: "large"
+  rate_limit_delay: 0.5
+
+# 去气口配置
+breath_removal:
+  enabled: true
+  gap_threshold: 0.5  # 间隔阈值(秒),大于此值的间隔将被移除
+  min_segment_duration: 0.1  # 最小可移除间隔(秒),避免误切极短停顿
+
+# 背景音乐配置
+bgm:
+  enabled: false  # 默认禁用，需要时手动启用
+  default_volume: 0.3  # 默认音量 (0.0-2.0)
+  segments: []
+    # 示例配置：
+    # - path: "assets/bgm/intro.mp3"
+    #   start: 0.0          # 开始时间（秒）
+    #   end: 10.0           # 结束时间（秒）
+    #   volume: 0.5         # 可选：覆盖默认音量
+    # - path: "assets/bgm/main.mp3"
+    #   start: 10.0
+    #   end: 60.0
+    #   volume: 0.3
+    # - path: "assets/bgm/outro.mp3"
+    #   start: 60.0
+    #   end: null           # null 表示播放到音频文件结束
+    #   volume: 0.4
+
+# 日志配置
+logging:
+  level: "INFO"
+  format: "{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}"
+  rotation: "10 MB"
+  retention: "7 days"
