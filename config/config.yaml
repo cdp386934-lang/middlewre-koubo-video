@@ -62,9 +62,9 @@ capcut:
 subtitle:
   font_size: 10
   font_color: "#F7F8FA"
-  font_name: "新青年体"
+  font_name: "默陌手写"
   keyword_color: "#FFB347"
-  keyword_font_size: 13
+  keyword_font_size: 12
   position: "bottom"
   alignment: 1
   transform_x: 0
@@ -147,7 +147,7 @@ overlay_text:
         identity_font_size: 12
         name_transform_x: -560
         separator_transform_x: -106
-        identity_transform_x: -560
+        identity_transform_x: 475
         name_transform_y: -1218
         separator_transform_y: -1206
         identity_transform_y: -1228
