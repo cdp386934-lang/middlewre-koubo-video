@@ -71,6 +71,7 @@ class VideoPipeline:
 
         logger.info("[步骤 4.5/8] 生成标题")
         generated_title = self.deepseek_service.generate_title(subtitle_data.get_full_text())
+        logger.info(f"生成的标题: {generated_title}")
 
         # 步骤5: 素材管理
         logger.info("[步骤 5/8] 素材管理")
@@ -80,14 +81,15 @@ class VideoPipeline:
         else:
             logger.info("素材管理已禁用")
 
-        # 步骤6: 背景音乐（可选）
-        logger.info("[步骤 6/8] 背景音乐")
-        bgm_segments = self.bgm_manager.get_bgm_segments()
-        bgm_data = self.bgm_manager.get_bgm_data()
-
-        # 步骤7: 视频信息
-        logger.info("[步骤 7/8] 提取视频信息")
+        # 步骤6: 视频信息
+        logger.info("[步骤 6/8] 提取视频信息")
         video_info = self.video_info_extractor.extract(input_video_path)
+
+        # 步骤7: 背景音乐（可选）
+        logger.info("[步骤 7/8] 背景音乐")
+        target_duration = DraftGenerator._get_target_draft_duration(subtitle_data, video_info)
+        bgm_segments = self.bgm_manager.get_bgm_segments(draft_duration=target_duration)
+        bgm_data = self.bgm_manager.get_bgm_data()
 
         # 步骤8: 生成剪映草稿
         logger.info("[步骤 8/8] 生成剪映草稿")

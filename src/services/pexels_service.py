@@ -30,7 +30,15 @@ class PexelsService:
             "Authorization": self.api_key
         })
 
-    def search_videos(self, query: str, per_page: int = 5, orientation: str = "landscape") -> List[Dict]:
+    def search_videos(
+        self,
+        query: str,
+        per_page: int = 5,
+        orientation: str = "landscape",
+        min_duration: Optional[int] = None,
+        max_duration: Optional[int] = None,
+        locale: Optional[str] = None,
+    ) -> List[Dict]:
         """
         搜索视频素材
 
@@ -53,6 +61,12 @@ class PexelsService:
                 "per_page": per_page,
                 "orientation": orientation
             }
+            if min_duration is not None:
+                params["min_duration"] = int(min_duration)
+            if max_duration is not None:
+                params["max_duration"] = int(max_duration)
+            if locale:
+                params["locale"] = locale
 
             time.sleep(self.rate_limit_delay)
             response = self.session.get(url, params=params, timeout=10)
@@ -60,11 +74,11 @@ class PexelsService:
 
             data = response.json()
             videos = data.get("videos", [])
-            logger.info(f"为关键词'{query}'找到{len(videos)}个视频")
+            logger.info(f"为关键词\"{query}\"找到{len(videos)}个视频")
             return videos
 
         except requests.exceptions.RequestException as e:
-            logger.warning(f"搜索视频失败 (关键词: {query}): {e}")
+            logger.warning(f"搜索视频失败 (关键词: \"{query}\"): {e}")
             return []
 
     def search_photos(self, query: str, per_page: int = 5, orientation: str = "landscape") -> List[Dict]:
@@ -97,11 +111,11 @@ class PexelsService:
 
             data = response.json()
             photos = data.get("photos", [])
-            logger.info(f"为关键词'{query}'找到{len(photos)}张图片")
+            logger.info(f"为关键词\"{query}\"找到{len(photos)}张图片")
             return photos
 
         except requests.exceptions.RequestException as e:
-            logger.warning(f"搜索图片失败 (关键词: {query}): {e}")
+            logger.warning(f"搜索图片失败 (关键词: \"{query}\"): {e}")
             return []
 
     def get_video_file_url(self, video_data: Dict, quality: str = "hd") -> Optional[str]:

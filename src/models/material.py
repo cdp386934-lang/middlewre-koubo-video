@@ -10,8 +10,11 @@ class Material(BaseModel):
     id: int                          # Pexels素材ID
     type: str                        # "video" 或 "photo"
     keyword: str                     # 搜索关键词
+    source_query: Optional[str] = None  # 触发命中的英文检索词
     url: str                         # Pexels页面URL
     download_url: str                # 直接下载URL
+    local_path: Optional[str] = None # 本地下载缓存路径
+    processed_path: Optional[str] = None # 本地转码后的可插入路径
     width: int
     height: int
     duration: Optional[float] = None # 视频时长(秒)

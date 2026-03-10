@@ -24,6 +24,27 @@ deepseek:
   model: "deepseek-chat"
   temperature: 0.7
   max_tokens: 2000
+  broll_query:
+    temperature: 0.2
+    max_tokens: 220
+    fallback_count: 3
+    prompt_template: |
+      你是专业的口播视频自动剪辑助手。
+      当前视频类型：口播视频（人声讲解，需要画面辅助理解）。
+      根据字幕关键词：{keyword}
+      结合上下文语义：{context}
+      为我在 Pexels 上检索最合适的 B-roll 视频素材，要求：
+
+      1. 画面风格：高清、干净、无杂乱元素、无文字、无水印，适合口播视频背景。
+      2. 内容要求：必须紧扣 {keyword}，并符合 {context} 场景，只匹配与讲解内容强相关的画面。
+      3. 镜头类型：中景、特写、空镜、慢动作优先，避免人物大头、剧烈运动、干扰信息。
+      4. 时长：3-8 秒，适合剪辑穿插。
+      5. 输出：只返回最精准的 3 组英文检索词，用于 Pexels 搜索。
+
+      输出格式（严格）：
+      ["query one", "query two", "query three"]
+
+      仅输出 JSON 数组，不要任何解释，不要 markdown。
   title:
     max_length: 18
     temperature: 0.8
@@ -34,73 +55,118 @@ capcut:
   api_url: "http://localhost:30000"
   timeout: 30
   draft_root: "~/Library/Containers/com.lemon.lvpro/Data/Movies/JianyingPro/User Data/Projects/com.lveditor.draft"
+  sync_to_local_draft: true  # 保存后自动同步到本机剪映项目目录
+  mate_project_path: "/Users/lottery/intership/code/capcut-mate"  # 用于调用 capcut-mate Python API（get_imported_track）
 
 # 字幕配置
 subtitle:
-  font_size: 24
-  font_color: "#FFFFFF"
-  keyword_color: "#FFD700"
-  keyword_font_size: 28
+  font_size: 10
+  font_color: "#333333"
+  keyword_color: "#C9A227"
+  keyword_font_size: 10
   position: "bottom"
+  alignment: 1
+  transform_x: 0
+  transform_y: -512
+  scale_x: 1
+  scale_y: 1
+  has_shadow: false
+  anchor_to_video: false
+  margin_to_video: 72
+
+# 微播草稿封面布局
+draft_layout:
+  enabled: true
+  width: 1080
+  height: 1920
+  background_color: "#F2F1EC"
+  main_video:
+    max_width: 960
+    max_height: 980
+    transform_x: 0
+    transform_y: 0
 
 # 口播封面/作者文案配置
 overlay_text:
   title:
     enabled: true
     start: 0.0
-    duration: 4.0
-    font_size: 34
-    text_color: "#FFFFFF"
+    duration: 0.0
+    full_duration: true
+    anchor_to_video: false
+    margin_to_video: 96
+    font_size: 20
+    text_color: "#333333"
     alignment: 1
     transform_x: 0
-    transform_y: -320
-    has_shadow: true
+    transform_y: 1435
+    has_shadow: false
   author:
-    enabled: false
-    start: 0.5
-    duration: 4.0
-    name: ""
-    identity: ""
-    name_font_size: 22
-    identity_font_size: 18
-    name_text_color: "#FFFFFF"
-    identity_text_color: "#FFD700"
+    enabled: true
+    start: 0.0
+    duration: 0.0
+    full_duration: true
+    anchor_to_video: false
+    margin_to_video: 60
+    line_gap: 28
+    name: "lottery"
+    identity: "口播视频、情感博主"
+    name_font_size: 18
+    identity_font_size: 10
+    name_text_color: "#333333"
+    identity_text_color: "#666666"
     name_alignment: 1
     identity_alignment: 1
     name_transform_x: 0
-    identity_transform_x: 0
-    name_transform_y: -430
-    identity_transform_y: -380
-    has_shadow: true
+    identity_transform_x: 412
+    name_transform_y: -1204
+    identity_transform_y: -1488
+    has_shadow: false
 
 # 关键词提取配置
 keyword:
-  max_count: 10
-  min_frequency: 2
+  max_count: 130
   prompt_template: |
-    请分析以下视频字幕文本，提取出最重要的关键词。
+    请按句提取口播字幕关键词，确保每句都有 1-2 个关键词。
 
     要求：
-    1. 提取5-10个最重要的关键词或短语
-    2. 关键词应该是名词、动词或重要的形容词
-    3. 优先提取出现频率高的词语
-    4. 返回JSON格式：[{"word": "关键词", "importance": 0.9}]
+    1. 输入是多句字幕，你必须逐句处理
+    2. 每句只提取 1-2 个关键词
+    3. 关键词优先名词/动词，避免语气词、虚词
+    4. 关键词长度建议 2-6 个中文字符
+    5. 只输出 JSON，不要解释，不要 markdown 代码块
 
-    字幕文本：
-    {text}
+    输出格式（严格遵守）：
+    [
+      {"sentence_index": 1, "keywords": ["关键词1", "关键词2"]},
+      {"sentence_index": 2, "keywords": ["关键词1"]}
+    ]
 
-    请直接返回JSON数组，不要其他说明文字。
+    字幕内容：
+    {numbered_sentences}
 
 # Pexels 素材配置
 pexels:
   api_key: "${PEXELS_API_KEY}"
   base_url: "https://api.pexels.com/v1"
-  enabled: false  # 暂时禁用
+  enabled: true   # 素材功能开关 false: 禁用 true: 启用
   max_keywords: 5
   per_keyword: 5
+  queries_per_keyword: 3
   orientation: "landscape"
   video_quality: "hd"
   photo_size: "large"
+  include_photos: false
+  min_duration: 3
+  max_duration: 8
+  locale: "en-US"
+  download_timeout: 30
+  download_retries: 2
+  shot_preferences:
+    - "medium shot"
+    - "close up"
+    - "establishing shot"
+    - "slow motion"
   rate_limit_delay: 0.5
 
 # 去气口配置
@@ -111,22 +177,61 @@ breath_removal:
 
 # 背景音乐配置
 bgm:
-  enabled: false  # 默认禁用，需要时手动启用
+  enabled: true   # true 启用 / false 禁用
   default_volume: 0.3  # 默认音量 (0.0-2.0)
-  segments: []
-    # 示例配置：
-    # - path: "assets/bgm/intro.mp3"
-    #   start: 0.0          # 开始时间（秒）
-    #   end: 10.0           # 结束时间（秒）
-    #   volume: 0.5         # 可选：覆盖默认音量
-    # - path: "assets/bgm/main.mp3"
-    #   start: 10.0
-    #   end: 60.0
-    #   volume: 0.3
-    # - path: "assets/bgm/outro.mp3"
-    #   start: 60.0
-    #   end: null           # null 表示播放到音频文件结束
-    #   volume: 0.4
+  # 可选音频池（建议 3-5 首）。若 segments 未设置 path，将按顺序轮询分配。
+  audio_pool:
+    - "input/bgm/迟迟.mp3"
+    - "input/bgm/此生不换.mp3"
+    - "input/bgm/爱的供养.mp3"
+  # BGM 片段配置（你只需要填 start/end）：
+  # - path: 可选，未填时自动从 audio_pool 取
+  # - start/end: 在成片中的时间段（秒，end 为空则到成片结尾）
+  # - volume: 可选，未设置时使用 default_volume
+  segments:
+    - start: 0.0
+      end: 16.0
+      volume: 0.30
+    - start: 20.0
+      end: 45.0
+      volume: 0.30
+    - start: 45.0
+      end: 105.0
+      volume: 0.30
+
+    # 你也可以继续加到 5 段，例如：
+    # - start: 70.0
+    #   end: 90.0
+    # - start: 90.0
+    #   end: null
+
+  # 使用说明：
+# 1. audio_pool: 候选 BGM 列表（建议 3-5 首）
+#    - segments 未写 path 时，会按片段顺序从 audio_pool 轮询分配
+#    - 如果写了 path，则优先使用片段自己的 path
+#
+# 2. start: 开始时间（秒）
+#    - 在视频时间轴上的开始位置
+#
+# 3. end: 结束时间（秒）
+#    - 在视频时间轴上的结束位置
+#    - 设置为 null 表示从 start 时间播放到成片结束（短音频自动循环）
+#
+# 4. volume: 音量（0.0-2.0）
+#    - 可选参数，不设置则使用 default_volume
+#    - 0.0 = 静音
+#    - 1.0 = 原始音量
+#    - 2.0 = 两倍音量
+#
+# 5. enabled: 是否启用 BGM 功能
+#    - true: 启用
+#    - false: 禁用（快速开关）
+
+# 注意事项：
+# - audio_pool 建议至少放 3 首
+# - end 时间必须大于 start 时间
+# - 多个片段可以重叠播放
+# - 片段按配置顺序添加到草稿
 
 # 日志配置
 logging:

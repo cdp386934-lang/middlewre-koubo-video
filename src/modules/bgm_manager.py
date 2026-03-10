@@ -32,7 +32,87 @@ class BGMManager:
             logger.error(f"加载BGM配置失败: {e}")
             return None
 
-    def get_bgm_segments(self) -> Optional[List[BGMSegment]]:
+    def _resolve_segment_path(self, segment: BGMSegment, index: int) -> str:
+        """解析片段音频路径：优先使用 segment.path，否则从 audio_pool 按顺序轮询。"""
+        if segment.path:
+            return segment.path
+
+        pool = self.bgm_data.audio_pool if self.bgm_data else []
+        if not pool:
+            raise ValueError(
+                "BGM片段未配置 path，且 bgm.audio_pool 为空。请在片段里配置 path 或提供 3-5 首 audio_pool。"
+            )
+        return pool[index % len(pool)]
+
+    @staticmethod
+    def _probe_audio_duration(abs_path: Path) -> float:
+        """读取音频时长（秒）。"""
+        import ffmpeg
+
+        probe = ffmpeg.probe(str(abs_path))
+        duration_str = probe.get("format", {}).get("duration")
+        if duration_str in (None, ""):
+            raise ValueError(f"无法读取音频时长: {abs_path}")
+
+        duration = float(duration_str)
+        if duration <= 0:
+            raise ValueError(f"音频时长无效 ({duration}) : {abs_path}")
+        return duration
+
+    def _expand_segment_for_duration(
+        self,
+        segment: BGMSegment,
+        target_end: float,
+        segment_index: int,
+    ) -> List[BGMSegment]:
+        """
+        将单个配置片段扩展为可直接下发到 add_audios 的片段列表：
+        - 音频长于需求：裁剪
+        - 音频短于需求：循环铺满并裁剪最后一段
+        """
+        resolved_path = self._resolve_segment_path(segment, segment_index)
+        segment_with_path = BGMSegment(**{**segment.model_dump(), "path": resolved_path})
+        abs_path = segment_with_path.get_absolute_path(self.project_root)
+        if not abs_path.exists():
+            raise FileNotFoundError(f"BGM文件不存在: {resolved_path} -> {abs_path}")
+
+        if target_end <= segment_with_path.start:
+            raise ValueError(f"BGM时间段无效: start={segment_with_path.start}, target_end={target_end}, path={resolved_path}")
+
+        audio_duration = self._probe_audio_duration(abs_path)
+        source_start = max(float(segment_with_path.source_start or 0.0), 0.0)
+        source_end_limit = float(segment_with_path.source_end) if segment_with_path.source_end is not None else audio_duration
+
+        if source_end_limit > audio_duration:
+            logger.warning(f"BGM source_end 超出音频时长，自动裁剪: {resolved_path}, source_end={source_end_limit}, audio={audio_duration}")
+            source_end_limit = audio_duration
+        if source_end_limit <= source_start:
+            raise ValueError(
+                f"BGM源区间无效: source_start={source_start}, source_end={source_end_limit}, path={resolved_path}"
+            )
+
+        loop_unit = source_end_limit - source_start
+        expanded_segments: List[BGMSegment] = []
+        cursor = segment_with_path.start
+
+        while cursor < target_end:
+            remain = target_end - cursor
+            current_duration = min(loop_unit, remain)
+            expanded_segments.append(
+                BGMSegment(
+                    path=resolved_path,
+                    start=cursor,
+                    end=cursor + current_duration,
+                    volume=segment_with_path.volume,
+                    source_start=source_start,
+                    source_end=source_start + current_duration,
+                )
+            )
+            cursor += current_duration
+
+        return expanded_segments
+
+    def get_bgm_segments(self, draft_duration: Optional[float] = None) -> Optional[List[BGMSegment]]:
         """
         获取验证后的BGM片段列表
 
@@ -47,17 +127,33 @@ class BGMManager:
             logger.info("没有配置BGM片段")
             return None
 
-        # 验证所有片段的文件是否存在
-        valid_segments = []
-        for segment in self.bgm_data.segments:
-            abs_path = segment.get_absolute_path(self.project_root)
-            if not abs_path.exists():
-                logger.warning(f"BGM文件不存在，跳过: {segment.path}")
-                continue
-            valid_segments.append(segment)
+        valid_segments: List[BGMSegment] = []
+        for index, segment in enumerate(self.bgm_data.segments):
+            try:
+                if draft_duration is None:
+                    resolved_path = self._resolve_segment_path(segment, index)
+                    segment_with_path = BGMSegment(**{**segment.model_dump(), "path": resolved_path})
+                    abs_path = segment_with_path.get_absolute_path(self.project_root)
+                    if not abs_path.exists():
+                        raise FileNotFoundError(f"BGM文件不存在: {resolved_path} -> {abs_path}")
+                    valid_segments.append(segment_with_path)
+                    continue
+
+                segment_end = float(segment.end) if segment.end is not None else float(draft_duration)
+                effective_end = min(segment_end, float(draft_duration))
+                if effective_end <= segment.start:
+                    logger.warning(
+                        f"BGM片段超出草稿时长，已跳过: path={segment.path}, start={segment.start}, "
+                        f"end={segment.end}, draft_duration={draft_duration}"
+                    )
+                    continue
+
+                valid_segments.extend(self._expand_segment_for_duration(segment, effective_end, segment_index=index))
+            except Exception as e:
+                raise ValueError(f"处理BGM配置失败 ({segment.path}): {e}") from e
 
         if not valid_segments:
-            logger.warning("没有有效的BGM片段（所有文件都不存在）")
+            logger.warning("没有有效的BGM片段")
             return None
 
         logger.info(f"找到 {len(valid_segments)} 个有效的BGM片段")

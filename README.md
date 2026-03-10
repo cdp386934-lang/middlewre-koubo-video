@@ -11,6 +11,7 @@
 - ✅ 剪映草稿生成（CapCut-mate API）
 - ✅ 去气口处理（压缩口播停顿）
 - ✅ LLM 自动标题 + 作者身份文案轨道
+- ✅ 保存后自动同步到剪映本地目录
 - 🚧 素材管理（预留接口）
 - 🚧 背景音乐（预留接口）
 
@@ -149,6 +150,8 @@ middleware-koubo-video/
 - `whisper.device`: 运行设备（cpu 或 cuda）
 - `deepseek.api_key`: DeepSeek API Key
 - `capcut.api_url`: CapCut-mate API 地址
+- `capcut.draft_root`: 本机剪映草稿目录
+- `capcut.sync_to_local_draft`: 保存后是否自动同步到本机剪映目录
 - `subtitle.font_size`: 字幕字体大小
 - `subtitle.keyword_color`: 关键词高亮颜色
 

@@ -1,5 +1,9 @@
 import json
+import time
 from pathlib import Path
+from typing import List, Optional
+
+import requests
 from loguru import logger
 
 
@@ -15,17 +19,29 @@ class MaterialManager:
 
         if self.enabled:
             from src.services.pexels_service import PexelsService
+            from src.services.deepseek_service import DeepSeekService
 
             self.pexels_service = PexelsService(pexels_config)
+            self.deepseek_service = DeepSeekService(config)
             self.material_dir = Path(config["paths"].get("materials", "output/materials"))
             self.material_dir.mkdir(parents=True, exist_ok=True)
+            self.download_dir = self.material_dir / "downloads"
+            self.download_dir.mkdir(parents=True, exist_ok=True)
 
             # 配置参数
             self.max_keywords = pexels_config.get("max_keywords", 5)
             self.per_keyword = pexels_config.get("per_keyword", 5)
+            self.queries_per_keyword = pexels_config.get("queries_per_keyword", 3)
             self.orientation = pexels_config.get("orientation", "landscape")
             self.video_quality = pexels_config.get("video_quality", "hd")
             self.photo_size = pexels_config.get("photo_size", "large")
+            self.include_photos = bool(pexels_config.get("include_photos", False))
+            self.min_duration = int(pexels_config.get("min_duration", 3))
+            self.max_duration = int(pexels_config.get("max_duration", 8))
+            self.locale = pexels_config.get("locale", "en-US")
+            self.download_timeout = int(pexels_config.get("download_timeout", 30))
+            self.download_retries = int(pexels_config.get("download_retries", 2))
+            self.shot_preferences = [str(v).lower() for v in pexels_config.get("shot_preferences", [])]
         else:
             logger.warning("Pexels API key未配置，素材管理功能已禁用")
 
@@ -56,8 +72,13 @@ class MaterialManager:
         all_materials = []
         for keyword_obj in top_keywords:
             keyword = keyword_obj.word
-            logger.info(f"搜索关键词: {keyword}")
-            materials = self._search_materials_for_keyword(keyword)
+            logger.info(f"搜索关键词: \"{keyword}\"")
+            context = self._build_keyword_context(keyword_obj, subtitle_data)
+            queries = self.deepseek_service.generate_broll_queries(keyword, context)[:self.queries_per_keyword]
+            if not queries:
+                queries = [keyword]
+
+            materials = self._search_materials_for_keyword(keyword, queries)
 
             # 3. 映射素材到字幕segments
             for material in materials:
@@ -83,64 +104,140 @@ class MaterialManager:
         )
         return sorted_keywords[:n]
 
-    def _search_materials_for_keyword(self, keyword):
+    def _search_materials_for_keyword(self, keyword: str, queries: List[str]):
         """为单个关键词搜索素材"""
         from src.models.material import Material
 
         materials = []
+        seen_ids = set()
 
-        # 搜索视频
-        videos = self.pexels_service.search_videos(
-            keyword,
-            per_page=self.per_keyword,
-            orientation=self.orientation
-        )
+        for query in queries:
+            videos = self.pexels_service.search_videos(
+                query,
+                per_page=self.per_keyword,
+                orientation=self.orientation,
+                min_duration=self.min_duration,
+                max_duration=self.max_duration,
+                locale=self.locale,
+            )
+            videos = self._filter_videos(videos)
 
-        for video in videos:
-            download_url = self.pexels_service.get_video_file_url(video, self.video_quality)
-            if not download_url:
+            for video in videos:
+                if video["id"] in seen_ids:
+                    continue
+                download_url = self.pexels_service.get_video_file_url(video, self.video_quality)
+                if not download_url:
+                    continue
+                local_path = self._download_material(download_url, f"{video['id']}.mp4")
+
+                material = Material(
+                    id=video["id"],
+                    type="video",
+                    keyword=keyword,
+                    source_query=query,
+                    url=video["url"],
+                    download_url=download_url,
+                    local_path=str(local_path) if local_path else None,
+                    width=video["width"],
+                    height=video["height"],
+                    duration=video.get("duration"),
+                    photographer=video["user"]["name"],
+                    photographer_url=video["user"]["url"]
+                )
+                materials.append(material)
+                seen_ids.add(video["id"])
+
+            # 搜索图片（默认关闭）
+            if not self.include_photos:
                 continue
 
-            material = Material(
-                id=video["id"],
-                type="video",
-                keyword=keyword,
-                url=video["url"],
-                download_url=download_url,
-                width=video["width"],
-                height=video["height"],
-                duration=video.get("duration"),
-                photographer=video["user"]["name"],
-                photographer_url=video["user"]["url"]
+            photos = self.pexels_service.search_photos(
+                query,
+                per_page=self.per_keyword,
+                orientation=self.orientation
             )
-            materials.append(material)
 
-        # 搜索图片
-        photos = self.pexels_service.search_photos(
-            keyword,
-            per_page=self.per_keyword,
-            orientation=self.orientation
-        )
+            for photo in photos:
+                if photo["id"] in seen_ids:
+                    continue
+                download_url = self.pexels_service.get_photo_file_url(photo, self.photo_size)
+                if not download_url:
+                    continue
+                local_path = self._download_material(download_url, f"{photo['id']}.jpg")
 
-        for photo in photos:
-            download_url = self.pexels_service.get_photo_file_url(photo, self.photo_size)
-            if not download_url:
-                continue
-
-            material = Material(
-                id=photo["id"],
-                type="photo",
-                keyword=keyword,
-                url=photo["url"],
-                download_url=download_url,
-                width=photo["width"],
-                height=photo["height"],
-                photographer=photo["photographer"],
-                photographer_url=photo["photographer_url"]
-            )
-            materials.append(material)
+                material = Material(
+                    id=photo["id"],
+                    type="photo",
+                    keyword=keyword,
+                    source_query=query,
+                    url=photo["url"],
+                    download_url=download_url,
+                    local_path=str(local_path) if local_path else None,
+                    width=photo["width"],
+                    height=photo["height"],
+                    photographer=photo["photographer"],
+                    photographer_url=photo["photographer_url"]
+                )
+                materials.append(material)
+                seen_ids.add(photo["id"])
 
         return materials
+
+    def _filter_videos(self, videos: List[dict]) -> List[dict]:
+        """按时长硬筛选，并对镜头偏好做轻量排序。"""
+        candidates = []
+        for video in videos:
+            duration = float(video.get("duration") or 0.0)
+            if duration <= 0:
+                continue
+            if duration < self.min_duration or duration > self.max_duration:
+                continue
+
+            score = 0
+            score += 2 if self.orientation == "landscape" and video.get("width", 0) >= video.get("height", 0) else 0
+            score += 2 if 3 <= duration <= 8 else 0
+            page_url = str(video.get("url", "")).lower()
+            for token in self.shot_preferences:
+                if token in page_url:
+                    score += 1
+            candidates.append((score, video))
+
+        candidates.sort(key=lambda item: item[0], reverse=True)
+        return [video for _, video in candidates]
+
+    def _build_keyword_context(self, keyword_obj, subtitle_data) -> str:
+        """从关键词命中的首个字幕段提取上下文。"""
+        if not subtitle_data or not getattr(subtitle_data, "segments", None):
+            return keyword_obj.word
+
+        segment_map = {seg.id: seg for seg in subtitle_data.segments}
+        if not keyword_obj.positions:
+            return keyword_obj.word
+        segment = segment_map.get(keyword_obj.positions[0])
+        if not segment:
+            return keyword_obj.word
+        return str(getattr(segment, "text", "")).strip() or keyword_obj.word
+
+    def _download_material(self, url: str, filename: str) -> Optional[Path]:
+        """下载素材到本地缓存，失败时返回 None。"""
+        target = self.download_dir / filename
+        if target.exists():
+            return target
+
+        for attempt in range(1, self.download_retries + 2):
+            try:
+                with requests.get(url, timeout=self.download_timeout, stream=True) as response:
+                    response.raise_for_status()
+                    with open(target, "wb") as file_obj:
+                        for chunk in response.iter_content(chunk_size=1024 * 1024):
+                            if chunk:
+                                file_obj.write(chunk)
+                return target
+            except Exception as exc:
+                logger.warning(f"下载素材失败({attempt}): {url} -> {exc}")
+                if attempt <= self.download_retries:
+                    time.sleep(0.3)
+        return None
 
     def _map_material_to_segments(self, material, keyword, keyword_data, subtitle_data):
         """将素材映射到对应的字幕segments"""
