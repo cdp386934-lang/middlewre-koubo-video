@@ -1,4 +1,5 @@
 import json
+import os
 import time
 from pathlib import Path
 from typing import List, Optional
@@ -14,14 +15,18 @@ class MaterialManager:
         self.config = config
         pexels_config = config.get("pexels", {})
 
-        # 检查是否配置了 Pexels
-        self.enabled = bool(pexels_config.get("api_key"))
+        api_key = self._resolve_env_value(pexels_config.get("api_key"))
+        config_enabled = bool(pexels_config.get("enabled", True))
+        # 仅当开关开启且 API key 可用时，素材功能才真正启用
+        self.enabled = config_enabled and bool(api_key)
 
         if self.enabled:
             from src.services.pexels_service import PexelsService
             from src.services.deepseek_service import DeepSeekService
 
-            self.pexels_service = PexelsService(pexels_config)
+            runtime_pexels_config = dict(pexels_config)
+            runtime_pexels_config["api_key"] = api_key
+            self.pexels_service = PexelsService(runtime_pexels_config)
             self.deepseek_service = DeepSeekService(config)
             self.material_dir = Path(config["paths"].get("materials", "output/materials"))
             self.material_dir.mkdir(parents=True, exist_ok=True)
@@ -43,7 +48,20 @@ class MaterialManager:
             self.download_retries = int(pexels_config.get("download_retries", 2))
             self.shot_preferences = [str(v).lower() for v in pexels_config.get("shot_preferences", [])]
         else:
-            logger.warning("Pexels API key未配置，素材管理功能已禁用")
+            if not config_enabled:
+                logger.info("pexels.enabled=false，素材管理功能已禁用")
+            else:
+                logger.warning("Pexels API key未配置或为空，素材管理功能已禁用")
+
+    @staticmethod
+    def _resolve_env_value(value: Optional[str]) -> Optional[str]:
+        raw = str(value or "").strip()
+        if not raw:
+            return None
+        if raw.startswith("${") and raw.endswith("}"):
+            env_var = raw[2:-1].strip()
+            return os.getenv(env_var)
+        return raw
 
     def manage(self, subtitle_data=None, keyword_data=None):
         """
@@ -105,11 +123,11 @@ class MaterialManager:
         return sorted_keywords[:n]
 
     def _search_materials_for_keyword(self, keyword: str, queries: List[str]):
-        """为单个关键词搜索素材"""
+        """为单个关键词搜索素材（最多返回1个）。"""
         from src.models.material import Material
 
-        materials = []
         seen_ids = set()
+        selected_material = None
 
         for query in queries:
             videos = self.pexels_service.search_videos(
@@ -144,8 +162,12 @@ class MaterialManager:
                     photographer=video["user"]["name"],
                     photographer_url=video["user"]["url"]
                 )
-                materials.append(material)
+                selected_material = material
                 seen_ids.add(video["id"])
+                break
+
+            if selected_material:
+                break
 
             # 搜索图片（默认关闭）
             if not self.include_photos:
@@ -178,10 +200,18 @@ class MaterialManager:
                     photographer=photo["photographer"],
                     photographer_url=photo["photographer_url"]
                 )
-                materials.append(material)
+                selected_material = material
                 seen_ids.add(photo["id"])
+                break
 
-        return materials
+            if selected_material:
+                break
+
+        if selected_material:
+            logger.info(f"关键词 \"{keyword}\" 已选择1个素材: {selected_material.type} ({selected_material.id})")
+            return [selected_material]
+        logger.warning(f"关键词 \"{keyword}\" 未检索到可用素材")
+        return []
 
     def _filter_videos(self, videos: List[dict]) -> List[dict]:
         """按时长硬筛选，并对镜头偏好做轻量排序。"""

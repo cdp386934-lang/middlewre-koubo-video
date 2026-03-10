@@ -723,6 +723,41 @@ class DraftGenerator:
 
         return start, min(float(configured_duration), remaining)
 
+    @staticmethod
+    def _format_title_with_forced_colon_break(title: str) -> str:
+        """在首个中英文冒号后强制换行，适配 `xxx:xxxx` 的封面标题样式。"""
+        if not title or "\n" in title:
+            return title
+
+        for colon in ("：", ":"):
+            idx = title.find(colon)
+            if idx != -1:
+                return f"{title[:idx + 1]}\n{title[idx + 1:]}"
+
+        return title
+
+    @staticmethod
+    def _format_author_identity_lines(author_config: Dict) -> str:
+        """将作者身份文案格式化为两行（或多行）文本。"""
+        identity_lines = author_config.get("identity_lines")
+        if isinstance(identity_lines, list):
+            cleaned = [str(line).strip() for line in identity_lines if str(line).strip()]
+            if cleaned:
+                return "\n".join(cleaned)
+
+        identity = str(author_config.get("identity", "")).strip()
+        if not identity:
+            return ""
+
+        # 兼容旧配置，支持通过常见分隔符自动拆行。
+        for delimiter in ("\\n", "\n", "、", "|", "/", "，", ",", "；", ";"):
+            if delimiter in identity:
+                parts = [part.strip() for part in identity.split(delimiter) if part.strip()]
+                if parts:
+                    return "\n".join(parts)
+
+        return identity
+
     def _build_overlay_texts(self, duration: float, generated_title: Optional[str], video_layout: Optional[Dict] = None) -> List[Dict]:
         """构建标题、作者、身份等静态文案轨道。"""
         overlay_config = self.config.get("overlay_text", {})
@@ -733,6 +768,7 @@ class DraftGenerator:
             title_start, title_duration = self._resolve_overlay_duration(title_config, duration, default_start=0.0)
             if title_duration > 0:
                 title_font_size = int(title_config.get("font_size", 34))
+                title_text = self._format_title_with_forced_colon_break(str(generated_title))
                 title_options = dict(title_config)
                 if video_layout and title_config.get("anchor_to_video", True):
                     title_margin = float(title_config.get("margin_to_video", 96.0))
@@ -743,7 +779,7 @@ class DraftGenerator:
                     "captions": [{
                         "start": int(title_start * 1_000_000),
                         "end": int((title_start + title_duration) * 1_000_000),
-                        "text": generated_title,
+                        "text": title_text,
                         "font_size": title_font_size,
                     }],
                     "options": self._build_caption_options(title_options),
@@ -754,10 +790,10 @@ class DraftGenerator:
             author_start, author_duration = self._resolve_overlay_duration(author_config, duration, default_start=0.0)
             if author_duration > 0:
                 author_name = str(author_config.get("name", "")).strip()
-                author_identity = str(author_config.get("identity", "")).strip()
+                author_identity = self._format_author_identity_lines(author_config)
+                separator_text = str(author_config.get("separator_text", "|")).strip()
                 name_font_size = int(author_config.get("name_font_size", 22))
                 identity_font_size = int(author_config.get("identity_font_size", 18))
-                line_gap = float(author_config.get("line_gap", 28.0))
                 base_author_y = None
                 if video_layout and author_config.get("anchor_to_video", True):
                     base_author_y = video_layout["bottom"] + float(author_config.get("margin_to_video", 60.0))
@@ -777,13 +813,26 @@ class DraftGenerator:
                         "options": self._build_caption_options(author_name_options, prefix="name_"),
                     })
 
+                if separator_text and author_name and author_identity:
+                    separator_options = dict(author_config)
+                    if base_author_y is not None:
+                        separator_font_size = int(author_config.get("separator_font_size", name_font_size))
+                        separator_options["separator_transform_y"] = base_author_y + (separator_font_size / 2)
+                    items.append({
+                        "name": "author_separator",
+                        "captions": [{
+                            "start": int(author_start * 1_000_000),
+                            "end": int((author_start + author_duration) * 1_000_000),
+                            "text": separator_text,
+                            "font_size": int(author_config.get("separator_font_size", name_font_size)),
+                        }],
+                        "options": self._build_caption_options(separator_options, prefix="separator_"),
+                    })
+
                 if author_identity:
                     author_identity_options = dict(author_config)
                     if base_author_y is not None:
-                        if author_name:
-                            author_identity_options["identity_transform_y"] = base_author_y + (name_font_size / 2) + line_gap + (identity_font_size / 2)
-                        else:
-                            author_identity_options["identity_transform_y"] = base_author_y + (identity_font_size / 2)
+                        author_identity_options["identity_transform_y"] = base_author_y + (identity_font_size / 2)
                     items.append({
                         "name": "author_identity",
                         "captions": [{
