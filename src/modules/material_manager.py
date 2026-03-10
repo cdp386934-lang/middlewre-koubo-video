@@ -34,9 +34,9 @@ class MaterialManager:
             self.download_dir.mkdir(parents=True, exist_ok=True)
 
             # 配置参数
-            self.max_keywords = pexels_config.get("max_keywords", 5)
-            self.per_keyword = pexels_config.get("per_keyword", 5)
-            self.queries_per_keyword = pexels_config.get("queries_per_keyword", 3)
+            # 不再通过配置限制关键词数量和 query 数量，按实际上下文全量处理。
+            # per_page 仅控制单次 Pexels API 返回量，不影响插入点策略。
+            self.search_per_page = int(pexels_config.get("search_per_page", 5))
             self.orientation = pexels_config.get("orientation", "landscape")
             self.video_quality = pexels_config.get("video_quality", "hd")
             self.photo_size = pexels_config.get("photo_size", "large")
@@ -82,9 +82,9 @@ class MaterialManager:
 
         logger.info("开始素材管理")
 
-        # 1. 提取top N关键词
-        top_keywords = self._get_top_keywords(keyword_data, self.max_keywords)
-        logger.info(f"选择了{len(top_keywords)}个关键词进行素材搜索")
+        # 1. 提取关键词（不做数量上限裁剪）
+        top_keywords = self._get_top_keywords(keyword_data)
+        logger.info(f"将基于{len(top_keywords)}个关键词进行素材搜索")
 
         # 2. 为每个关键词搜索素材
         all_materials = []
@@ -92,7 +92,7 @@ class MaterialManager:
             keyword = keyword_obj.word
             logger.info(f"搜索关键词: \"{keyword}\"")
             context = self._build_keyword_context(keyword_obj, subtitle_data)
-            queries = self.deepseek_service.generate_broll_queries(keyword, context)[:self.queries_per_keyword]
+            queries = self.deepseek_service.generate_broll_queries(keyword, context)
             if not queries:
                 queries = [keyword]
 
@@ -113,13 +113,15 @@ class MaterialManager:
         logger.info(f"素材管理完成,共获取{len(all_materials)}个素材")
         return material_data
 
-    def _get_top_keywords(self, keyword_data, n=5):
-        """提取重要性最高的N个关键词"""
+    def _get_top_keywords(self, keyword_data, n=None):
+        """提取关键词；默认不限制数量，仅按重要性排序。"""
         sorted_keywords = sorted(
             keyword_data.keywords,
             key=lambda k: k.importance,
             reverse=True
         )
+        if n is None:
+            return sorted_keywords
         return sorted_keywords[:n]
 
     def _search_materials_for_keyword(self, keyword: str, queries: List[str]):
@@ -132,7 +134,7 @@ class MaterialManager:
         for query in queries:
             videos = self.pexels_service.search_videos(
                 query,
-                per_page=self.per_keyword,
+                per_page=self.search_per_page,
                 orientation=self.orientation,
                 min_duration=self.min_duration,
                 max_duration=self.max_duration,
@@ -175,7 +177,7 @@ class MaterialManager:
 
             photos = self.pexels_service.search_photos(
                 query,
-                per_page=self.per_keyword,
+                per_page=self.search_per_page,
                 orientation=self.orientation
             )
 

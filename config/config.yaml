@@ -61,18 +61,19 @@ capcut:
 # 字幕配置
 subtitle:
   font_size: 10
-  font_color: "#333333"
-  keyword_color: "#C9A227"
-  keyword_font_size: 10
+  font_color: "#F7F8FA"
+  font_name: "新青年体"
+  keyword_color: "#FFB347"
+  keyword_font_size: 13
   position: "bottom"
   alignment: 1
   transform_x: 0
-  transform_y: -512
+  transform_y: -256
   scale_x: 1
   scale_y: 1
-  has_shadow: false
+  has_shadow: true
   anchor_to_video: false
-  margin_to_video: 72
+  margin_to_video: 84
 
 # 微播草稿封面布局
 draft_layout:
@@ -93,13 +94,30 @@ overlay_text:
     start: 0.0
     duration: 0.0
     full_duration: true
+    # 标题换行策略（二选一）
+    line_break_mode: "symbol"         # symbol: 按符号断行 / semantic: 按语义词断行
+    force_semantic_line_break: true   # 总开关（兼容旧逻辑，建议保持 true）
+    min_line_chars: 4                 # 每行最少字符
+    max_line_chars: 16                # 每行最大字符（超过则不强制换行）
+    semantic_tokens:                  # line_break_mode=semantic 时生效
+      - "但是"
+      - "却"
+      - "而是"
+      - "所以"
+      - "因此"
+      - "让"
+      - "把"
+      - "是"
+      - "会"
+      - "就"
     anchor_to_video: false
-    margin_to_video: 96
-    font_size: 20
-    text_color: "#333333"
+    margin_to_video: 104
+    font_size: 22
+    font_name: "悠然体"
+    text_color: "#2F3542"
     alignment: 1
     transform_x: 0
-    transform_y: 1435
+    transform_y: 1418
     has_shadow: false
   author:
     enabled: true
@@ -109,25 +127,52 @@ overlay_text:
     anchor_to_video: false
     margin_to_video: 60
     name: "武志红"
+    scene: "formal"                  # 截图风格推荐 formal，更克制更官方
+    scene_styles:
+      knowledge:
+        name_font_name: "思源黑体 CN Bold"
+        identity_font_name: "思源黑体 CN Regular"
+      warm:
+        name_font_name: "方正楷体简体"
+        identity_font_name: "方正仿宋简体"
+      formal:
+        name_font_name: "思源黑体 CN Bold"
+        separator_font_name: "思源黑体 CN Regular"
+        identity_font_name: "思源黑体 CN Medium"
+        name_text_color: "#2F3542"
+        separator_text_color: "#5B6270"
+        identity_text_color: "#4C5563"
+        name_font_size: 22
+        separator_font_size: 24
+        identity_font_size: 12
+        name_transform_x: -560
+        separator_transform_x: -106
+        identity_transform_x: -560
+        name_transform_y: -1218
+        separator_transform_y: -1206
+        identity_transform_y: -1228
     identity_lines:
       - "北大心理学硕士"
       - "知名心理作家"
     separator_text: "|"
-    name_font_size: 20
+    name_font_size: 22
+    name_font_name: "思源黑体 CN Bold"
     separator_font_size: 24
-    identity_font_size: 11
-    name_text_color: "#333333"
-    separator_text_color: "#333333"
-    identity_text_color: "#666666"
+    separator_font_name: "思源黑体 CN Regular"
+    identity_font_size: 12
+    identity_font_name: "思源黑体 CN Medium"
+    name_text_color: "#2F3542"
+    separator_text_color: "#5B6270"
+    identity_text_color: "#4C5563"
     name_alignment: 1
     separator_alignment: 1
     identity_alignment: 3
-    name_transform_x: -570
-    name_transform_y: -1215
-    separator_transform_x: -103
-    separator_transform_y: -1203
-    identity_transform_x: 453
-    identity_transform_y: -1227
+    name_transform_x: -560
+    name_transform_y: -1218
+    separator_transform_x: -106
+    separator_transform_y: -1206
+    identity_transform_x: 448
+    identity_transform_y: -1228
     has_shadow: false
 
 # 关键词提取配置
@@ -157,9 +202,7 @@ pexels:
   api_key: "${PEXELS_API_KEY}"
   base_url: "https://api.pexels.com/v1"
   enabled: true   # 素材功能开关 false: 禁用 true: 启用
-  max_keywords: 5
-  per_keyword: 5
-  queries_per_keyword: 3
+  search_per_page: 5
   orientation: "landscape"
   video_quality: "hd"
   photo_size: "large"

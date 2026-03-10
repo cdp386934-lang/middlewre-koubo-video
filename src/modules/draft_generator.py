@@ -413,7 +413,7 @@ class DraftGenerator:
             margin_to_video = float(subtitle_config.get("margin_to_video", 72.0))
             transform_y = video_layout["bottom"] + margin_to_video + (int(subtitle_config.get("font_size", 24)) / 2)
 
-        return {
+        options = {
             "text_color": subtitle_config.get("font_color", "#333333"),
             "alignment": int(subtitle_config.get("alignment", 1)),
             "font_size": int(subtitle_config.get("font_size", 24)),
@@ -423,6 +423,22 @@ class DraftGenerator:
             "scale_y": float(subtitle_config.get("scale_y", 1.0)),
             "has_shadow": bool(subtitle_config.get("has_shadow", False)),
         }
+        font_name = str(subtitle_config.get("font_name", "")).strip()
+        if font_name:
+            options["font_name"] = font_name
+        return options
+
+    @staticmethod
+    def _resolve_scene_style(config: Dict) -> Dict:
+        """根据 scene 选择样式覆盖，用于作者/身份等文案。"""
+        merged = dict(config or {})
+        scene = str(merged.get("scene", "")).strip()
+        styles = merged.get("scene_styles", {})
+        if scene and isinstance(styles, dict):
+            scene_style = styles.get(scene, {})
+            if isinstance(scene_style, dict):
+                merged.update(scene_style)
+        return merged
 
     @staticmethod
     def _calculate_main_video_scale(video_info: Dict, max_width: float, max_height: float) -> float:
@@ -785,7 +801,7 @@ class DraftGenerator:
                     "options": self._build_caption_options(title_options),
                 })
 
-        author_config = overlay_config.get("author", {})
+        author_config = self._resolve_scene_style(overlay_config.get("author", {}))
         if author_config.get("enabled", False):
             author_start, author_duration = self._resolve_overlay_duration(author_config, duration, default_start=0.0)
             if author_duration > 0:
@@ -851,7 +867,7 @@ class DraftGenerator:
         def pick(key: str, default=None):
             return config.get(f"{prefix}{key}", config.get(key, default))
 
-        return {
+        options = {
             "text_color": pick("text_color", "#FFFFFF"),
             "alignment": int(pick("alignment", 1)),
             "font_size": int(pick("font_size", 18)),
@@ -861,6 +877,10 @@ class DraftGenerator:
             "scale_y": float(pick("scale_y", 1.0)),
             "has_shadow": bool(pick("has_shadow", True)),
         }
+        font_name = str(pick("font_name", "")).strip()
+        if font_name:
+            options["font_name"] = font_name
+        return options
 
     def _add_overlay_texts(self, overlay_texts: List[Dict]) -> None:
         for overlay in overlay_texts:
@@ -1002,10 +1022,8 @@ class DraftGenerator:
 
             resolved_keyword = self._resolve_caption_keyword(entry)
             if resolved_keyword:
-                # 仅用于视觉强调：将字幕中的关键词包裹双引号，不引入额外语义。
-                quoted_keyword = f"\"{resolved_keyword}\""
-                caption["text"] = str(caption["text"]).replace(resolved_keyword, quoted_keyword, 1)
-                caption["keyword"] = quoted_keyword
+                # 关键词直接高亮，不再额外添加引号。
+                caption["keyword"] = resolved_keyword
                 caption["keyword_color"] = keyword_color
                 caption["keyword_font_size"] = keyword_font_size
 
