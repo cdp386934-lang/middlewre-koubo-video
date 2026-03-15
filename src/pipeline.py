@@ -9,6 +9,7 @@ from .modules.material_manager import MaterialManager
 from .modules.bgm_manager import BGMManager
 from .modules.video_info import VideoInfoExtractor
 from .modules.draft_generator import DraftGenerator
+from .modules.cloud_renderer import CloudRenderer
 from .models.draft import DraftMetadata
 from .services.deepseek_service import DeepSeekService
 from .utils.file_handler import write_json
@@ -30,6 +31,7 @@ class VideoPipeline:
         self.bgm_manager = BGMManager(config)
         self.video_info_extractor = VideoInfoExtractor(config)
         self.draft_generator = DraftGenerator(config)
+        self.cloud_renderer = CloudRenderer(config, self.draft_generator.capcut_service)
 
         logger.info("视频处理工作流初始化完成")
 
@@ -104,6 +106,31 @@ class VideoPipeline:
             material_data=material_data,
             generated_title=generated_title,
         )
+
+        if self.cloud_renderer.is_enabled():
+            logger.info("[步骤 8.5/8] 云渲染（提交 + 轮询）")
+            try:
+                render_result = self.cloud_renderer.submit_and_poll(draft_metadata.draft_path)
+                render_status = str(render_result.get("status", "")).lower()
+                video_url = render_result.get("video_url", "")
+                error_message = render_result.get("error_message", "")
+
+                if render_status == "completed":
+                    logger.info(f"云渲染完成，视频地址: {video_url}")
+                elif render_status == "failed":
+                    logger.error(f"云渲染失败: {error_message}")
+                elif render_status == "timeout":
+                    logger.warning(f"云渲染超时: {error_message}")
+                else:
+                    logger.warning(f"云渲染结束于非预期状态: {render_status}")
+
+                render_result_path = Path(self.config["paths"]["drafts"]) / f"{draft_metadata.draft_name}_render_result.json"
+                write_json(render_result, render_result_path)
+                logger.info(f"云渲染结果已保存: {render_result_path}")
+            except Exception as exc:
+                logger.error(f"云渲染流程异常，已跳过渲染阶段: {exc}")
+        else:
+            logger.info("云渲染已禁用，跳过渲染提交与轮询")
 
         logger.info(f"=" * 60)
         logger.info(f"处理完成！")

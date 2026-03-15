@@ -57,6 +57,14 @@ capcut:
   draft_root: "~/Library/Containers/com.lemon.lvpro/Data/Movies/JianyingPro/User Data/Projects/com.lveditor.draft"
   sync_to_local_draft: true  # 保存后自动同步到本机剪映项目目录
   mate_project_path: "/Users/lottery/intership/code/capcut-mate"  # 用于调用 capcut-mate Python API（get_imported_track）
+  cloud_render:
+    enabled: true  # true: 启用 false: 禁用
+    api_url: "https://capcut-mate.jcaigc.cn"  # 云渲染服务地址（gen_video/gen_video_status）
+    draft_url_base: "https://capcut-mate.jcaigc.cn"  # 云渲染服务拉取草稿的 get_draft base URL（可只填域名，会自动补齐 get_draft 路径）
+    submit: false  # true: 提交任务+轮询；false: 仅轮询 gen_video_status
+    api_key: "${CAPCUT_MATE_API_KEY}"  # 启用云渲染时建议必填；capcut-mate 开启积分/APIKey 校验时不能为空
+    poll_interval_seconds: 5
+    timeout_seconds: 1800
 
 # 字幕配置
 subtitle:

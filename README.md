@@ -9,11 +9,12 @@
 - ✅ 关键词提取（DeepSeek AI）
 - ✅ 字幕生成（带关键词高亮）
 - ✅ 剪映草稿生成（CapCut-mate API）
+- ✅ 云渲染导出视频（CapCut-mate gen_video / gen_video_status，可选）
 - ✅ 去气口处理（压缩口播停顿）
 - ✅ LLM 自动标题 + 作者身份文案轨道
 - ✅ 保存后自动同步到剪映本地目录
-- 🚧 素材管理（预留接口）
-- 🚧 背景音乐（预留接口）
+- ✅ 素材管理（预留接口）
+- ✅背景音乐（预留接口）
 
 ## 工作流程
 
@@ -103,6 +104,41 @@ python src/main.py
 ```
 
 处理完成后，可以在剪映专业版中打开生成的草稿。
+
+## 云渲染（可选）
+
+当 `capcut-mate` 服务支持云渲染时，你可以在草稿生成后自动触发导出并轮询状态。
+
+1) 配置 `config/config.yaml`：
+
+- `capcut.cloud_render.enabled: true`
+- `capcut.cloud_render.api_url: "https://your-cloud-render-api"`（可选：gen_video/gen_video_status 的服务地址；为空则使用 `capcut.api_url`）
+- `capcut.cloud_render.draft_url_base: "https://your-public-capcut-mate/openapi/capcut-mate/v1/get_draft"`（可选：让云渲染服务能下载到草稿与文件）
+- `capcut.cloud_render.submit: false`（可选：仅轮询 `gen_video_status`，不提交 `gen_video`）
+- `capcut.cloud_render.api_key: "你的 apiKey"`（当 capcut-mate 开启 `ENABLE_APIKEY=true` 时必填）
+- `capcut.cloud_render.poll_interval_seconds`: 轮询间隔
+- `capcut.cloud_render.timeout_seconds`: 总超时
+
+2) 运行主流程：`python src/main.py`
+
+渲染结果会写入 `output/drafts/<draft_name>_render_result.json`，其中包含 `status/progress/video_url/error_message` 等字段。
+
+## GEN_VIDEO_STATUS 测试脚本
+
+脚本 `test_gen_video_status.py` 用于按文档流程测试 `gen_video_status`（可选先调用 `gen_video` 提交任务，然后轮询到完成/失败/超时）。
+
+示例：
+
+```bash
+# 1) 已有 draft_url：直接轮询
+python test_gen_video_status.py --draft-url "YOUR_DRAFT_URL"
+
+# 2) 用 draft_id 拼 draft_url（默认使用 config 里的 capcut.api_url）
+python test_gen_video_status.py --draft-id "YOUR_DRAFT_ID"
+
+# 3) 先提交任务再轮询（需要时带 apiKey）
+python test_gen_video_status.py --draft-url "YOUR_DRAFT_URL" --submit --api-key "YOUR_API_KEY"
+```
 
 ## 项目结构
 

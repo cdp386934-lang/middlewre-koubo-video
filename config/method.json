@@ -1,0 +1,4049 @@
+{
+    "code": 0,
+    "message": "成功",
+    "openapi": "3.1.0",
+    "info": {
+      "title": "CapCut Mate API",
+      "version": "1.0"
+    },
+    "paths": {
+      "/openapi/capcut-mate/v1/create_draft": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Create Draft",
+          "description": "创建剪映草稿 (v1版本)",
+          "operationId": "create_draft_openapi_capcut_mate_v1_create_draft_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateDraftRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CreateDraftResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/save_draft": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Save Draft",
+          "description": "保存剪映草稿 (v1版本)",
+          "operationId": "save_draft_openapi_capcut_mate_v1_save_draft_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaveDraftRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SaveDraftResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/add_videos": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Add Videos",
+          "description": "向剪映草稿添加视频 (v1版本)",
+          "operationId": "add_videos_openapi_capcut_mate_v1_add_videos_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddVideosRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AddVideosResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/add_audios": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Add Audios",
+          "description": "向剪映草稿批量添加音频 (v1版本)",
+          "operationId": "add_audios_openapi_capcut_mate_v1_add_audios_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddAudiosRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AddAudiosResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/add_images": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Add Images",
+          "description": "向剪映草稿批量添加图片 (v1版本)",
+          "operationId": "add_images_openapi_capcut_mate_v1_add_images_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddImagesRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AddImagesResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/add_sticker": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Add Sticker",
+          "description": "向剪映草稿添加贴纸 (v1版本)",
+          "operationId": "add_sticker_openapi_capcut_mate_v1_add_sticker_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddStickerRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AddStickerResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/add_keyframes": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Add Keyframes",
+          "description": "向剪映草稿添加关键帧 (v1版本)",
+          "operationId": "add_keyframes_openapi_capcut_mate_v1_add_keyframes_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddKeyframesRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AddKeyframesResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/add_captions": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Add Captions",
+          "description": "向剪映草稿批量添加字幕 (v1版本)",
+          "operationId": "add_captions_openapi_capcut_mate_v1_add_captions_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCaptionsRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AddCaptionsResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/add_effects": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Add Effects",
+          "description": "向剪映草稿添加特效 (v1版本)",
+          "operationId": "add_effects_openapi_capcut_mate_v1_add_effects_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddEffectsRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AddEffectsResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/add_masks": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Add Masks",
+          "description": "向剪映草稿添加遮罩 (v1版本)",
+          "operationId": "add_masks_openapi_capcut_mate_v1_add_masks_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddMasksRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AddMasksResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/add_text_style": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Add Text Style",
+          "description": "为文本创建富文本样式 (v1版本)",
+          "operationId": "add_text_style_openapi_capcut_mate_v1_add_text_style_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddTextStyleRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AddTextStyleResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/easy_create_material": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Easy Create Material",
+          "description": "快速创建素材轨道 (v1版本)",
+          "operationId": "easy_create_material_openapi_capcut_mate_v1_easy_create_material_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EasyCreateMaterialRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/EasyCreateMaterialResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/get_text_animations": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Get Text Animations",
+          "description": "获取文字出入场动画 (v1版本)",
+          "operationId": "get_text_animations_openapi_capcut_mate_v1_get_text_animations_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTextAnimationsRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetTextAnimationsResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/get_image_animations": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Get Image Animations",
+          "description": "获取图片出入场动画 (v1版本)",
+          "operationId": "get_image_animations_openapi_capcut_mate_v1_get_image_animations_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetImageAnimationsRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetImageAnimationsResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/get_draft": {
+        "get": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Get Draft",
+          "description": "获取草稿 - 获取所有文件列表",
+          "operationId": "get_draft_openapi_capcut_mate_v1_get_draft_get",
+          "parameters": [
+            {
+              "name": "draft_id",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "minLength": 20,
+                "maxLength": 32,
+                "title": "Draft Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetDraftResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/gen_video": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Gen Video",
+          "description": "生成视频 - 根据草稿URL，导出视频",
+          "operationId": "gen_video_openapi_capcut_mate_v1_gen_video_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenVideoRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GenVideoResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/gen_video_status": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Gen Video Status",
+          "description": "查询视频生成任务状态 (v1版本)",
+          "operationId": "gen_video_status_openapi_capcut_mate_v1_gen_video_status_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenVideoStatusRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GenVideoStatusResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/get_audio_duration": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Get Audio Duration",
+          "description": "获取音频文件时长 (v1版本)",
+          "operationId": "get_audio_duration_openapi_capcut_mate_v1_get_audio_duration_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAudioDurationRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetAudioDurationResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/timelines": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Timelines",
+          "description": "创建时间线 (v1版本)",
+          "operationId": "timelines_openapi_capcut_mate_v1_timelines_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimelinesRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/TimelinesResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/audio_timelines": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Audio Timelines",
+          "description": "根据音频文件时长计算时间线 (v1版本)",
+          "operationId": "audio_timelines_openapi_capcut_mate_v1_audio_timelines_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudioTimelinesRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AudioTimelinesResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/audio_infos": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Audio Infos",
+          "description": "根据音频URL和时间线生成音频信息 (v1版本)",
+          "operationId": "audio_infos_openapi_capcut_mate_v1_audio_infos_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudioInfosRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AudioInfosResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/imgs_infos": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Imgs Infos",
+          "description": "根据图片URL和时间线生成图片信息 (v1版本)",
+          "operationId": "imgs_infos_openapi_capcut_mate_v1_imgs_infos_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImgsInfosRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ImgsInfosResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/caption_infos": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Caption Infos",
+          "description": "根据文本和时间线生成字幕信息 (v1版本)",
+          "operationId": "caption_infos_openapi_capcut_mate_v1_caption_infos_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptionInfosRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CaptionInfosResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/effect_infos": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Effect Infos",
+          "description": "根据特效名称和时间线生成特效信息 (v1版本)",
+          "operationId": "effect_infos_openapi_capcut_mate_v1_effect_infos_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EffectInfosRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/EffectInfosResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/keyframes_infos": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Keyframes Infos",
+          "description": "根据关键帧类型、位置比例和值生成关键帧信息 (v1版本)",
+          "operationId": "keyframes_infos_openapi_capcut_mate_v1_keyframes_infos_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeyframesInfosRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/KeyframesInfosResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/video_infos": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Video Infos",
+          "description": "根据视频URL和时间线生成视频信息 (v1版本)",
+          "operationId": "video_infos_openapi_capcut_mate_v1_video_infos_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoInfosRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VideoInfosResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/search_sticker": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Search Sticker",
+          "description": "搜索贴纸 (v1版本)",
+          "operationId": "search_sticker_openapi_capcut_mate_v1_search_sticker_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchStickerRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SearchStickerResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/get_url": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Get Url",
+          "description": "提取链接 (v1版本)",
+          "operationId": "get_url_openapi_capcut_mate_v1_get_url_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUrlRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetUrlResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/str_list_to_objs": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Str List To Objs",
+          "description": "字符串列表转化成对象列表 (v1版本)",
+          "operationId": "str_list_to_objs_openapi_capcut_mate_v1_str_list_to_objs_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StrListToObjsRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/StrListToObjsResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/str_to_list": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Str To List",
+          "description": "字符转列表 (v1版本)",
+          "operationId": "str_to_list_openapi_capcut_mate_v1_str_to_list_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StrToListRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/StrToListResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/openapi/capcut-mate/v1/objs_to_str_list": {
+        "post": {
+          "tags": [
+            "capcut-mate",
+            "v1"
+          ],
+          "summary": "Objs To Str List",
+          "description": "对象列表转化成字符串列表 (v1版本)",
+          "operationId": "objs_to_str_list_openapi_capcut_mate_v1_objs_to_str_list_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjsToStrListRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ObjsToStrListResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "AddAudiosRequest": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL"
+            },
+            "audio_infos": {
+              "type": "string",
+              "title": "Audio Infos",
+              "description": "音频信息列表, 用JSON字符串表示"
+            }
+          },
+          "type": "object",
+          "required": [
+            "draft_url",
+            "audio_infos"
+          ],
+          "title": "AddAudiosRequest",
+          "description": "批量添加音频请求参数"
+        },
+        "AddAudiosResponse": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "track_id": {
+              "type": "string",
+              "title": "Track Id",
+              "description": "音频轨道ID",
+              "default": ""
+            },
+            "audio_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Audio Ids",
+              "description": "音频ID列表",
+              "default": []
+            }
+          },
+          "type": "object",
+          "title": "AddAudiosResponse",
+          "description": "添加音频响应参数"
+        },
+        "AddCaptionsRequest": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "captions": {
+              "type": "string",
+              "title": "Captions",
+              "description": "字幕信息列表, 用JSON字符串表示",
+              "default": ""
+            },
+            "text_color": {
+              "type": "string",
+              "title": "Text Color",
+              "description": "文本颜色（十六进制）",
+              "default": "#ffffff"
+            },
+            "border_color": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Border Color",
+              "description": "边框颜色（十六进制）"
+            },
+            "alignment": {
+              "type": "integer",
+              "maximum": 5,
+              "minimum": 0,
+              "title": "Alignment",
+              "description": "文本对齐方式（0-5）",
+              "default": 1
+            },
+            "alpha": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Alpha",
+              "description": "文本透明度（0.0-1.0）",
+              "default": 1
+            },
+            "font": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Font",
+              "description": "字体名称"
+            },
+            "font_size": {
+              "type": "integer",
+              "minimum": 1,
+              "title": "Font Size",
+              "description": "字体大小",
+              "default": 15
+            },
+            "letter_spacing": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Letter Spacing",
+              "description": "字间距"
+            },
+            "line_spacing": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Line Spacing",
+              "description": "行间距"
+            },
+            "scale_x": {
+              "type": "number",
+              "title": "Scale X",
+              "description": "水平缩放",
+              "default": 1
+            },
+            "scale_y": {
+              "type": "number",
+              "title": "Scale Y",
+              "description": "垂直缩放",
+              "default": 1
+            },
+            "transform_x": {
+              "type": "number",
+              "title": "Transform X",
+              "description": "水平位移",
+              "default": 0
+            },
+            "transform_y": {
+              "type": "number",
+              "title": "Transform Y",
+              "description": "垂直位移",
+              "default": 0
+            },
+            "style_text": {
+              "type": "boolean",
+              "title": "Style Text",
+              "description": "是否使用样式文本",
+              "default": false
+            },
+            "underline": {
+              "type": "boolean",
+              "title": "Underline",
+              "description": "文字下划线开关",
+              "default": false
+            },
+            "italic": {
+              "type": "boolean",
+              "title": "Italic",
+              "description": "文本斜体开关",
+              "default": false
+            },
+            "bold": {
+              "type": "boolean",
+              "title": "Bold",
+              "description": "文本加粗开关",
+              "default": false
+            },
+            "has_shadow": {
+              "type": "boolean",
+              "title": "Has Shadow",
+              "description": "是否启用文本阴影",
+              "default": false
+            },
+            "shadow_info": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ShadowInfo"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "文本阴影参数"
+            }
+          },
+          "type": "object",
+          "title": "AddCaptionsRequest",
+          "description": "批量添加字幕请求参数"
+        },
+        "AddCaptionsResponse": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "track_id": {
+              "type": "string",
+              "title": "Track Id",
+              "description": "字幕轨道ID",
+              "default": ""
+            },
+            "text_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Text Ids",
+              "description": "字幕ID列表",
+              "default": []
+            },
+            "segment_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Segment Ids",
+              "description": "字幕片段ID列表",
+              "default": []
+            },
+            "segment_infos": {
+              "items": {
+                "$ref": "#/components/schemas/src__schemas__add_captions__SegmentInfo"
+              },
+              "type": "array",
+              "title": "Segment Infos",
+              "description": "片段信息列表",
+              "default": []
+            }
+          },
+          "type": "object",
+          "title": "AddCaptionsResponse",
+          "description": "添加字幕响应参数"
+        },
+        "AddEffectsRequest": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "effect_infos": {
+              "type": "string",
+              "title": "Effect Infos",
+              "description": "特效信息列表, 用JSON字符串表示",
+              "default": ""
+            }
+          },
+          "type": "object",
+          "title": "AddEffectsRequest",
+          "description": "添加特效请求参数"
+        },
+        "AddEffectsResponse": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "track_id": {
+              "type": "string",
+              "title": "Track Id",
+              "description": "特效轨道ID",
+              "default": ""
+            },
+            "effect_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Effect Ids",
+              "description": "特效ID列表",
+              "default": []
+            },
+            "segment_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Segment Ids",
+              "description": "特效片段ID列表",
+              "default": []
+            }
+          },
+          "type": "object",
+          "title": "AddEffectsResponse",
+          "description": "添加特效响应参数"
+        },
+        "AddImagesRequest": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL"
+            },
+            "image_infos": {
+              "type": "string",
+              "title": "Image Infos",
+              "description": "图片信息列表, 用JSON字符串表示"
+            },
+            "alpha": {
+              "type": "number",
+              "title": "Alpha",
+              "description": "全局透明度[0, 1]",
+              "default": 1
+            },
+            "scale_x": {
+              "type": "number",
+              "title": "Scale X",
+              "description": "X轴缩放比例",
+              "default": 1
+            },
+            "scale_y": {
+              "type": "number",
+              "title": "Scale Y",
+              "description": "Y轴缩放比例",
+              "default": 1
+            },
+            "transform_x": {
+              "type": "integer",
+              "title": "Transform X",
+              "description": "X轴位置偏移(像素)",
+              "default": 0
+            },
+            "transform_y": {
+              "type": "integer",
+              "title": "Transform Y",
+              "description": "Y轴位置偏移(像素)",
+              "default": 0
+            }
+          },
+          "type": "object",
+          "required": [
+            "draft_url",
+            "image_infos"
+          ],
+          "title": "AddImagesRequest",
+          "description": "批量添加图片请求参数"
+        },
+        "AddImagesResponse": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "track_id": {
+              "type": "string",
+              "title": "Track Id",
+              "description": "视频轨道ID",
+              "default": ""
+            },
+            "image_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Image Ids",
+              "description": "图片ID列表",
+              "default": []
+            },
+            "segment_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Segment Ids",
+              "description": "片段ID列表",
+              "default": []
+            },
+            "segment_infos": {
+              "items": {
+                "$ref": "#/components/schemas/src__schemas__add_images__SegmentInfo"
+              },
+              "type": "array",
+              "title": "Segment Infos",
+              "description": "片段信息列表",
+              "default": []
+            }
+          },
+          "type": "object",
+          "title": "AddImagesResponse",
+          "description": "添加图片响应参数"
+        },
+        "AddKeyframesRequest": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "keyframes": {
+              "type": "string",
+              "title": "Keyframes",
+              "description": "关键帧信息列表, 用JSON字符串表示",
+              "default": ""
+            }
+          },
+          "type": "object",
+          "title": "AddKeyframesRequest",
+          "description": "添加关键帧请求参数"
+        },
+        "AddKeyframesResponse": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "keyframes_added": {
+              "type": "integer",
+              "title": "Keyframes Added",
+              "description": "添加的关键帧数量",
+              "default": 0
+            },
+            "affected_segments": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Affected Segments",
+              "description": "受影响的片段ID列表",
+              "default": []
+            }
+          },
+          "type": "object",
+          "title": "AddKeyframesResponse",
+          "description": "添加关键帧响应参数"
+        },
+        "AddMasksRequest": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "segment_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Segment Ids",
+              "description": "要应用遮罩的片段ID数组",
+              "default": []
+            },
+            "name": {
+              "type": "string",
+              "title": "Name",
+              "description": "遮罩类型名称",
+              "default": "线性"
+            },
+            "X": {
+              "type": "integer",
+              "title": "X",
+              "description": "遮罩中心X坐标（像素）",
+              "default": 0
+            },
+            "Y": {
+              "type": "integer",
+              "title": "Y",
+              "description": "遮罩中心Y坐标（像素）",
+              "default": 0
+            },
+            "width": {
+              "type": "integer",
+              "title": "Width",
+              "description": "遮罩宽度（像素）",
+              "default": 512
+            },
+            "height": {
+              "type": "integer",
+              "title": "Height",
+              "description": "遮罩高度（像素）",
+              "default": 512
+            },
+            "feather": {
+              "type": "integer",
+              "title": "Feather",
+              "description": "羽化程度（0-100）",
+              "default": 0
+            },
+            "rotation": {
+              "type": "integer",
+              "title": "Rotation",
+              "description": "旋转角度（度）",
+              "default": 0
+            },
+            "invert": {
+              "type": "boolean",
+              "title": "Invert",
+              "description": "是否反转遮罩",
+              "default": false
+            },
+            "roundCorner": {
+              "type": "integer",
+              "title": "Roundcorner",
+              "description": "圆角半径（0-100）",
+              "default": 0
+            }
+          },
+          "type": "object",
+          "title": "AddMasksRequest",
+          "description": "添加遮罩请求参数"
+        },
+        "AddMasksResponse": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "masks_added": {
+              "type": "integer",
+              "title": "Masks Added",
+              "description": "成功添加的遮罩数量",
+              "default": 0
+            },
+            "affected_segments": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Affected Segments",
+              "description": "受影响的片段ID列表",
+              "default": []
+            },
+            "mask_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Mask Ids",
+              "description": "遮罩ID列表",
+              "default": []
+            }
+          },
+          "type": "object",
+          "title": "AddMasksResponse",
+          "description": "添加遮罩响应参数"
+        },
+        "AddStickerRequest": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL"
+            },
+            "sticker_id": {
+              "type": "string",
+              "title": "Sticker Id",
+              "description": "贴纸的唯一标识ID"
+            },
+            "start": {
+              "type": "integer",
+              "title": "Start",
+              "description": "贴纸开始时间（微秒）"
+            },
+            "end": {
+              "type": "integer",
+              "title": "End",
+              "description": "贴纸结束时间（微秒）"
+            },
+            "scale": {
+              "type": "number",
+              "title": "Scale",
+              "description": "贴纸缩放比例，建议范围[0.1, 5.0]",
+              "default": 1
+            },
+            "transform_x": {
+              "type": "integer",
+              "title": "Transform X",
+              "description": "X轴位置偏移（像素），以画布中心为原点",
+              "default": 0
+            },
+            "transform_y": {
+              "type": "integer",
+              "title": "Transform Y",
+              "description": "Y轴位置偏移（像素），以画布中心为原点",
+              "default": 0
+            }
+          },
+          "type": "object",
+          "required": [
+            "draft_url",
+            "sticker_id",
+            "start",
+            "end"
+          ],
+          "title": "AddStickerRequest",
+          "description": "添加贴纸请求参数"
+        },
+        "AddStickerResponse": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "sticker_id": {
+              "type": "string",
+              "title": "Sticker Id",
+              "description": "贴纸的唯一标识ID",
+              "default": ""
+            },
+            "track_id": {
+              "type": "string",
+              "title": "Track Id",
+              "description": "轨道ID",
+              "default": ""
+            },
+            "segment_id": {
+              "type": "string",
+              "title": "Segment Id",
+              "description": "片段ID",
+              "default": ""
+            },
+            "duration": {
+              "type": "integer",
+              "title": "Duration",
+              "description": "贴纸显示时长（微秒）",
+              "default": 0
+            }
+          },
+          "type": "object",
+          "title": "AddStickerResponse",
+          "description": "添加贴纸响应参数"
+        },
+        "AddTextStyleRequest": {
+          "properties": {
+            "text": {
+              "type": "string",
+              "title": "Text",
+              "description": "要处理的文本内容"
+            },
+            "keyword": {
+              "type": "string",
+              "title": "Keyword",
+              "description": "关键词，多个用 | 分隔"
+            },
+            "font_size": {
+              "type": "integer",
+              "title": "Font Size",
+              "description": "普通文本的字体大小",
+              "default": 12
+            },
+            "keyword_color": {
+              "type": "string",
+              "title": "Keyword Color",
+              "description": "关键词文本颜色（十六进制）",
+              "default": "#ff7100"
+            },
+            "keyword_font_size": {
+              "type": "integer",
+              "title": "Keyword Font Size",
+              "description": "关键词字体大小",
+              "default": 15
+            }
+          },
+          "type": "object",
+          "required": [
+            "text",
+            "keyword"
+          ],
+          "title": "AddTextStyleRequest",
+          "description": "创建文本富文本样式请求参数"
+        },
+        "AddTextStyleResponse": {
+          "properties": {
+            "text_style": {
+              "type": "string",
+              "title": "Text Style",
+              "description": "文本样式JSON字符串",
+              "default": ""
+            }
+          },
+          "type": "object",
+          "title": "AddTextStyleResponse",
+          "description": "创建文本富文本样式响应参数"
+        },
+        "AddVideosRequest": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "video_infos": {
+              "type": "string",
+              "title": "Video Infos",
+              "description": "视频信息列表, 用JSON字符串表示",
+              "default": ""
+            },
+            "alpha": {
+              "type": "number",
+              "title": "Alpha",
+              "description": "全局透明度[0, 1]",
+              "default": 1
+            },
+            "scale_x": {
+              "type": "number",
+              "title": "Scale X",
+              "description": "X轴缩放比例, 建议范围[0.1, 5.0]",
+              "default": 1
+            },
+            "scale_y": {
+              "type": "number",
+              "title": "Scale Y",
+              "description": "Y轴缩放比例, 建议范围[0.1, 5.0]",
+              "default": 1
+            },
+            "transform_x": {
+              "type": "integer",
+              "title": "Transform X",
+              "description": "X轴位置偏移(像素)",
+              "default": 0
+            },
+            "transform_y": {
+              "type": "integer",
+              "title": "Transform Y",
+              "description": "Y轴位置偏移(像素)",
+              "default": 0
+            }
+          },
+          "type": "object",
+          "title": "AddVideosRequest",
+          "description": "批量添加视频请求参数"
+        },
+        "AddVideosResponse": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "track_id": {
+              "type": "string",
+              "title": "Track Id",
+              "description": "轨道ID",
+              "default": ""
+            },
+            "video_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Video Ids",
+              "description": "视频ID列表",
+              "default": []
+            },
+            "segment_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Segment Ids",
+              "description": "片段ID列表",
+              "default": []
+            }
+          },
+          "type": "object",
+          "title": "AddVideosResponse",
+          "description": "添加视频响应参数"
+        },
+        "AudioInfosRequest": {
+          "properties": {
+            "mp3_urls": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Mp3 Urls",
+              "description": "音频文件URL数组"
+            },
+            "timelines": {
+              "items": {
+                "$ref": "#/components/schemas/TimelineItem-Input"
+              },
+              "type": "array",
+              "title": "Timelines",
+              "description": "时间线数组"
+            },
+            "audio_effect": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Audio Effect",
+              "description": "音频效果"
+            },
+            "volume": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Volume",
+              "description": "音量"
+            }
+          },
+          "type": "object",
+          "required": [
+            "mp3_urls",
+            "timelines"
+          ],
+          "title": "AudioInfosRequest",
+          "description": "音频信息请求参数"
+        },
+        "AudioInfosResponse": {
+          "properties": {
+            "infos": {
+              "type": "string",
+              "title": "Infos",
+              "description": "JSON字符串格式的音频信息"
+            }
+          },
+          "type": "object",
+          "required": [
+            "infos"
+          ],
+          "title": "AudioInfosResponse",
+          "description": "音频信息响应参数"
+        },
+        "AudioTimelinesRequest": {
+          "properties": {
+            "links": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Links",
+              "description": "音频文件URL数组"
+            }
+          },
+          "type": "object",
+          "required": [
+            "links"
+          ],
+          "title": "AudioTimelinesRequest",
+          "description": "音频时间线请求参数"
+        },
+        "AudioTimelinesResponse": {
+          "properties": {
+            "timelines": {
+              "items": {
+                "$ref": "#/components/schemas/src__schemas__audio_timelines__TimelineItem"
+              },
+              "type": "array",
+              "title": "Timelines",
+              "description": "分割后的时间线列表"
+            },
+            "all_timelines": {
+              "items": {
+                "$ref": "#/components/schemas/src__schemas__audio_timelines__TimelineItem"
+              },
+              "type": "array",
+              "title": "All Timelines",
+              "description": "完整的时间线列表"
+            }
+          },
+          "type": "object",
+          "required": [
+            "timelines",
+            "all_timelines"
+          ],
+          "title": "AudioTimelinesResponse",
+          "description": "音频时间线响应参数"
+        },
+        "CaptionInfosRequest": {
+          "properties": {
+            "texts": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Texts",
+              "description": "文本列表"
+            },
+            "timelines": {
+              "items": {
+                "$ref": "#/components/schemas/TimelineItem-Input"
+              },
+              "type": "array",
+              "title": "Timelines",
+              "description": "时间线数组"
+            },
+            "font_size": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Font Size",
+              "description": "字体大小"
+            },
+            "keyword_color": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Keyword Color",
+              "description": "关键词颜色"
+            },
+            "keyword_font_size": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Keyword Font Size",
+              "description": "关键词字体大小"
+            },
+            "keywords": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Keywords",
+              "description": "文本里面的重点词列表"
+            },
+            "in_animation": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "In Animation",
+              "description": "入场动画名称"
+            },
+            "in_animation_duration": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "In Animation Duration",
+              "description": "入场动画时长"
+            },
+            "loop_animation": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Loop Animation",
+              "description": "组合动画名称"
+            },
+            "loop_animation_duration": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Loop Animation Duration",
+              "description": "组合动画时长"
+            },
+            "out_animation": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Out Animation",
+              "description": "出场动画名称"
+            },
+            "out_animation_duration": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Out Animation Duration",
+              "description": "出场动画时长"
+            },
+            "transition": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Transition",
+              "description": "转场名称"
+            },
+            "transition_duration": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Transition Duration",
+              "description": "转场时长"
+            }
+          },
+          "type": "object",
+          "required": [
+            "texts",
+            "timelines"
+          ],
+          "title": "CaptionInfosRequest",
+          "description": "字幕信息请求参数"
+        },
+        "CaptionInfosResponse": {
+          "properties": {
+            "infos": {
+              "type": "string",
+              "title": "Infos",
+              "description": "JSON字符串格式的字幕信息"
+            }
+          },
+          "type": "object",
+          "required": [
+            "infos"
+          ],
+          "title": "CaptionInfosResponse",
+          "description": "字幕信息响应参数"
+        },
+        "CreateDraftRequest": {
+          "properties": {
+            "height": {
+              "type": "integer",
+              "minimum": 1,
+              "title": "Height",
+              "description": "视频高度",
+              "default": 1080
+            },
+            "width": {
+              "type": "integer",
+              "minimum": 1,
+              "title": "Width",
+              "description": "视频宽度",
+              "default": 1920
+            }
+          },
+          "type": "object",
+          "title": "CreateDraftRequest",
+          "description": "创建草稿请求参数"
+        },
+        "CreateDraftResponse": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "tip_url": {
+              "type": "string",
+              "title": "Tip Url",
+              "description": "草稿提示URL，获取帮助文档",
+              "default": ""
+            }
+          },
+          "type": "object",
+          "title": "CreateDraftResponse",
+          "description": "创建草稿响应参数"
+        },
+        "EasyCreateMaterialRequest": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "目标草稿的完整URL"
+            },
+            "audio_url": {
+              "type": "string",
+              "title": "Audio Url",
+              "description": "音频文件URL，不能为空或null"
+            },
+            "text": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Text",
+              "description": "要添加的文字内容"
+            },
+            "img_url": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Img Url",
+              "description": "图片文件URL"
+            },
+            "video_url": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Video Url",
+              "description": "视频文件URL"
+            },
+            "text_color": {
+              "type": "string",
+              "title": "Text Color",
+              "description": "文字颜色（十六进制格式）",
+              "default": "#ffffff"
+            },
+            "font_size": {
+              "type": "integer",
+              "title": "Font Size",
+              "description": "字体大小",
+              "default": 15
+            },
+            "text_transform_y": {
+              "type": "integer",
+              "title": "Text Transform Y",
+              "description": "文字Y轴位置偏移",
+              "default": 0
+            }
+          },
+          "type": "object",
+          "required": [
+            "draft_url",
+            "audio_url"
+          ],
+          "title": "EasyCreateMaterialRequest",
+          "description": "快速创建素材轨道请求参数"
+        },
+        "EasyCreateMaterialResponse": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            }
+          },
+          "type": "object",
+          "title": "EasyCreateMaterialResponse",
+          "description": "快速创建素材轨道响应参数"
+        },
+        "EffectInfosRequest": {
+          "properties": {
+            "effects": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Effects",
+              "description": "特效名称列表"
+            },
+            "timelines": {
+              "items": {
+                "$ref": "#/components/schemas/TimelineItem-Input"
+              },
+              "type": "array",
+              "title": "Timelines",
+              "description": "时间线数组"
+            }
+          },
+          "type": "object",
+          "required": [
+            "effects",
+            "timelines"
+          ],
+          "title": "EffectInfosRequest",
+          "description": "特效信息请求参数"
+        },
+        "EffectInfosResponse": {
+          "properties": {
+            "infos": {
+              "type": "string",
+              "title": "Infos",
+              "description": "JSON字符串格式的特效信息"
+            }
+          },
+          "type": "object",
+          "required": [
+            "infos"
+          ],
+          "title": "EffectInfosResponse",
+          "description": "特效信息响应参数"
+        },
+        "GenVideoRequest": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            },
+            "apiKey": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Apikey",
+              "description": "apiKey必须是合法的UUID格式"
+            }
+          },
+          "type": "object",
+          "title": "GenVideoRequest",
+          "description": "根据草稿导出视频"
+        },
+        "GenVideoResponse": {
+          "properties": {
+            "message": {
+              "type": "string",
+              "title": "Message",
+              "description": "响应消息"
+            }
+          },
+          "type": "object",
+          "required": [
+            "message"
+          ],
+          "title": "GenVideoResponse",
+          "description": "生成视频响应参数"
+        },
+        "GenVideoStatusRequest": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL"
+            }
+          },
+          "type": "object",
+          "required": [
+            "draft_url"
+          ],
+          "title": "GenVideoStatusRequest",
+          "description": "查询视频生成状态的请求模型"
+        },
+        "GenVideoStatusResponse": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL"
+            },
+            "status": {
+              "type": "string",
+              "title": "Status",
+              "description": "任务状态：pending=等待中，processing=处理中，completed=已完成，failed=失败"
+            },
+            "progress": {
+              "type": "integer",
+              "title": "Progress",
+              "description": "任务进度（0-100）"
+            },
+            "video_url": {
+              "type": "string",
+              "title": "Video Url",
+              "description": "生成的视频URL（仅在completed状态时有值）",
+              "default": ""
+            },
+            "error_message": {
+              "type": "string",
+              "title": "Error Message",
+              "description": "错误信息（仅在failed状态时有值）",
+              "default": ""
+            },
+            "created_at": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Created At",
+              "description": "任务创建时间"
+            },
+            "started_at": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Started At",
+              "description": "任务开始时间"
+            },
+            "completed_at": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Completed At",
+              "description": "任务完成时间"
+            }
+          },
+          "type": "object",
+          "required": [
+            "draft_url",
+            "status",
+            "progress"
+          ],
+          "title": "GenVideoStatusResponse",
+          "description": "查询视频生成状态的响应模型"
+        },
+        "GetAudioDurationRequest": {
+          "properties": {
+            "mp3_url": {
+              "type": "string",
+              "maxLength": 2083,
+              "minLength": 1,
+              "format": "uri",
+              "title": "Mp3 Url",
+              "description": "音频文件URL，支持mp3、wav、m4a等常见音频格式"
+            }
+          },
+          "type": "object",
+          "required": [
+            "mp3_url"
+          ],
+          "title": "GetAudioDurationRequest",
+          "description": "获取音频时长请求参数",
+          "example": {
+            "mp3_url": "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav"
+          }
+        },
+        "GetAudioDurationResponse": {
+          "properties": {
+            "duration": {
+              "type": "integer",
+              "minimum": 0,
+              "title": "Duration",
+              "description": "音频时长，单位：微秒"
+            }
+          },
+          "type": "object",
+          "required": [
+            "duration"
+          ],
+          "title": "GetAudioDurationResponse",
+          "description": "获取音频时长响应参数",
+          "example": {
+            "duration": 2325333
+          }
+        },
+        "GetDraftResponse": {
+          "properties": {
+            "files": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Files",
+              "description": "文件列表",
+              "default": []
+            }
+          },
+          "type": "object",
+          "title": "GetDraftResponse",
+          "description": "获取草稿响应参数"
+        },
+        "GetImageAnimationsRequest": {
+          "properties": {
+            "mode": {
+              "type": "integer",
+              "title": "Mode",
+              "description": "动画模式：0=所有，1=VIP，2=免费",
+              "default": 0
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "in",
+                "out",
+                "loop"
+              ],
+              "title": "Type",
+              "description": "动画类型：in=入场，out=出场，loop=循环"
+            }
+          },
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "title": "GetImageAnimationsRequest",
+          "description": "获取图片出入场动画的请求模型"
+        },
+        "GetImageAnimationsResponse": {
+          "properties": {
+            "effects": {
+              "items": {
+                "$ref": "#/components/schemas/ImageAnimationItem"
+              },
+              "type": "array",
+              "title": "Effects",
+              "description": "图片出入场动画对象数组"
+            }
+          },
+          "type": "object",
+          "required": [
+            "effects"
+          ],
+          "title": "GetImageAnimationsResponse",
+          "description": "获取图片出入场动画的响应模型"
+        },
+        "GetTextAnimationsRequest": {
+          "properties": {
+            "mode": {
+              "type": "integer",
+              "title": "Mode",
+              "description": "动画模式：0=所有，1=VIP，2=免费",
+              "default": 0
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "in",
+                "out",
+                "loop"
+              ],
+              "title": "Type",
+              "description": "动画类型：in=入场，out=出场，loop=循环"
+            }
+          },
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "title": "GetTextAnimationsRequest",
+          "description": "获取文字出入场动画的请求模型"
+        },
+        "GetTextAnimationsResponse": {
+          "properties": {
+            "effects": {
+              "items": {
+                "$ref": "#/components/schemas/TextAnimationItem"
+              },
+              "type": "array",
+              "title": "Effects",
+              "description": "文字出入场动画对象数组"
+            }
+          },
+          "type": "object",
+          "required": [
+            "effects"
+          ],
+          "title": "GetTextAnimationsResponse",
+          "description": "获取文字出入场动画的响应模型"
+        },
+        "GetUrlRequest": {
+          "properties": {
+            "output": {
+              "type": "string",
+              "title": "Output",
+              "description": "提取内容"
+            }
+          },
+          "type": "object",
+          "required": [
+            "output"
+          ],
+          "title": "GetUrlRequest",
+          "description": "提取链接请求参数"
+        },
+        "GetUrlResponse": {
+          "properties": {
+            "output": {
+              "type": "string",
+              "title": "Output",
+              "description": "提取内容"
+            }
+          },
+          "type": "object",
+          "required": [
+            "output"
+          ],
+          "title": "GetUrlResponse",
+          "description": "提取链接响应参数"
+        },
+        "HTTPValidationError": {
+          "properties": {
+            "detail": {
+              "items": {
+                "$ref": "#/components/schemas/ValidationError"
+              },
+              "type": "array",
+              "title": "Detail"
+            }
+          },
+          "type": "object",
+          "title": "HTTPValidationError"
+        },
+        "ImageAnimationItem": {
+          "properties": {
+            "resource_id": {
+              "type": "string",
+              "title": "Resource Id",
+              "description": "动画资源ID"
+            },
+            "type": {
+              "type": "string",
+              "title": "Type",
+              "description": "动画类型"
+            },
+            "category_id": {
+              "type": "string",
+              "title": "Category Id",
+              "description": "动画分类ID"
+            },
+            "category_name": {
+              "type": "string",
+              "title": "Category Name",
+              "description": "动画分类名称"
+            },
+            "duration": {
+              "type": "integer",
+              "title": "Duration",
+              "description": "动画时长（微秒）"
+            },
+            "id": {
+              "type": "string",
+              "title": "Id",
+              "description": "动画唯一标识ID"
+            },
+            "name": {
+              "type": "string",
+              "title": "Name",
+              "description": "动画名称"
+            },
+            "request_id": {
+              "type": "string",
+              "title": "Request Id",
+              "description": "请求ID",
+              "default": ""
+            },
+            "start": {
+              "type": "integer",
+              "title": "Start",
+              "description": "动画开始时间",
+              "default": 0
+            },
+            "icon_url": {
+              "type": "string",
+              "title": "Icon Url",
+              "description": "动画图标URL"
+            },
+            "material_type": {
+              "type": "string",
+              "title": "Material Type",
+              "description": "素材类型",
+              "default": "sticker"
+            },
+            "panel": {
+              "type": "string",
+              "title": "Panel",
+              "description": "面板信息",
+              "default": ""
+            },
+            "path": {
+              "type": "string",
+              "title": "Path",
+              "description": "路径信息",
+              "default": ""
+            },
+            "platform": {
+              "type": "string",
+              "title": "Platform",
+              "description": "支持平台",
+              "default": "all"
+            }
+          },
+          "type": "object",
+          "required": [
+            "resource_id",
+            "type",
+            "category_id",
+            "category_name",
+            "duration",
+            "id",
+            "name",
+            "icon_url"
+          ],
+          "title": "ImageAnimationItem",
+          "description": "单个图片动画项的数据模型"
+        },
+        "ImgsInfosRequest": {
+          "properties": {
+            "imgs": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Imgs",
+              "description": "图片URL列表"
+            },
+            "timelines": {
+              "items": {
+                "$ref": "#/components/schemas/TimelineItem-Input"
+              },
+              "type": "array",
+              "title": "Timelines",
+              "description": "时间线数组"
+            },
+            "height": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Height",
+              "description": "视频高度"
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Width",
+              "description": "视频宽度"
+            },
+            "in_animation": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "In Animation",
+              "description": "入场动画名称，支持多个动画用|分隔"
+            },
+            "in_animation_duration": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "In Animation Duration",
+              "description": "入场动画时长"
+            },
+            "loop_animation": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Loop Animation",
+              "description": "组合动画名称，支持多个动画用|分隔"
+            },
+            "loop_animation_duration": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Loop Animation Duration",
+              "description": "组合动画时长"
+            },
+            "out_animation": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Out Animation",
+              "description": "出场动画名称，支持多个动画用|分隔"
+            },
+            "out_animation_duration": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Out Animation Duration",
+              "description": "出场动画时长"
+            },
+            "transition": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Transition",
+              "description": "转场名称"
+            },
+            "transition_duration": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Transition Duration",
+              "description": "转场时长"
+            }
+          },
+          "type": "object",
+          "required": [
+            "imgs",
+            "timelines"
+          ],
+          "title": "ImgsInfosRequest",
+          "description": "图片信息请求参数"
+        },
+        "ImgsInfosResponse": {
+          "properties": {
+            "infos": {
+              "type": "string",
+              "title": "Infos",
+              "description": "JSON字符串格式的图片信息"
+            }
+          },
+          "type": "object",
+          "required": [
+            "infos"
+          ],
+          "title": "ImgsInfosResponse",
+          "description": "图片信息响应参数"
+        },
+        "KeyframesInfosRequest": {
+          "properties": {
+            "ctype": {
+              "type": "string",
+              "title": "Ctype",
+              "description": "关键帧类型：KFTypePositionX: X轴移动，需要提供width参数，值会被除以width进行归一化 KFTypePositionY: Y轴移动，需要提供height参数，值会被除以height进行归一化 KFTypeRotation: 旋转角度，值范围必须在0-360度之间 UNIFORM_SCALE: 均匀缩放，值范围必须在0.01-5之间 KFTypeAlpha: 透明度，值范围必须在0-1之间"
+            },
+            "offsets": {
+              "type": "string",
+              "title": "Offsets",
+              "description": "需要放置关键帧的位置比例，eg：0|100 这个就是代表在开始和结尾放置，0|50|100代表在开头，中间，结尾放置3个关键帧"
+            },
+            "values": {
+              "type": "string",
+              "title": "Values",
+              "description": "对应offsets的值，长度要一致，比如1|2，或者1|2|1"
+            },
+            "segment_infos": {
+              "items": {
+                "$ref": "#/components/schemas/SegmentInfoItem"
+              },
+              "type": "array",
+              "title": "Segment Infos",
+              "description": "轨道数据，对象数组"
+            },
+            "height": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Height",
+              "description": "视频高，可选参数"
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Width",
+              "description": "视频宽，可选参数"
+            }
+          },
+          "type": "object",
+          "required": [
+            "ctype",
+            "offsets",
+            "values",
+            "segment_infos"
+          ],
+          "title": "KeyframesInfosRequest",
+          "description": "关键帧信息请求参数"
+        },
+        "KeyframesInfosResponse": {
+          "properties": {
+            "keyframes_infos": {
+              "type": "string",
+              "title": "Keyframes Infos",
+              "description": "JSON字符串格式的关键帧信息"
+            }
+          },
+          "type": "object",
+          "required": [
+            "keyframes_infos"
+          ],
+          "title": "KeyframesInfosResponse",
+          "description": "关键帧信息响应参数"
+        },
+        "LargeImage": {
+          "properties": {
+            "image_url": {
+              "type": "string",
+              "title": "Image Url",
+              "description": "图片URL"
+            }
+          },
+          "type": "object",
+          "required": [
+            "image_url"
+          ],
+          "title": "LargeImage",
+          "description": "大图信息"
+        },
+        "ObjItem": {
+          "properties": {
+            "output": {
+              "type": "string",
+              "title": "Output",
+              "description": "URL地址"
+            }
+          },
+          "type": "object",
+          "required": [
+            "output"
+          ],
+          "title": "ObjItem",
+          "description": "对象项"
+        },
+        "ObjsToStrListRequest": {
+          "properties": {
+            "outputs": {
+              "items": {
+                "$ref": "#/components/schemas/ObjItem"
+              },
+              "type": "array",
+              "title": "Outputs",
+              "description": "数据对象"
+            }
+          },
+          "type": "object",
+          "required": [
+            "outputs"
+          ],
+          "title": "ObjsToStrListRequest",
+          "description": "对象列表转化成字符串列表请求参数"
+        },
+        "ObjsToStrListResponse": {
+          "properties": {
+            "infos": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Infos",
+              "description": "字符串列表"
+            }
+          },
+          "type": "object",
+          "required": [
+            "infos"
+          ],
+          "title": "ObjsToStrListResponse",
+          "description": "对象列表转化成字符串列表响应参数"
+        },
+        "SaveDraftRequest": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            }
+          },
+          "type": "object",
+          "title": "SaveDraftRequest",
+          "description": "创建草稿请求参数"
+        },
+        "SaveDraftResponse": {
+          "properties": {
+            "draft_url": {
+              "type": "string",
+              "title": "Draft Url",
+              "description": "草稿URL",
+              "default": ""
+            }
+          },
+          "type": "object",
+          "title": "SaveDraftResponse",
+          "description": "创建草稿响应参数"
+        },
+        "SearchStickerRequest": {
+          "properties": {
+            "keyword": {
+              "type": "string",
+              "title": "Keyword",
+              "description": "关键词，必选参数"
+            }
+          },
+          "type": "object",
+          "required": [
+            "keyword"
+          ],
+          "title": "SearchStickerRequest",
+          "description": "搜索贴纸请求参数"
+        },
+        "SearchStickerResponse": {
+          "properties": {
+            "data": {
+              "items": {
+                "$ref": "#/components/schemas/StickerItem"
+              },
+              "type": "array",
+              "title": "Data",
+              "description": "贴纸数据列表"
+            }
+          },
+          "type": "object",
+          "required": [
+            "data"
+          ],
+          "title": "SearchStickerResponse",
+          "description": "搜索贴纸响应参数"
+        },
+        "SegmentInfoItem": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "title": "Id",
+              "description": "片段ID"
+            },
+            "start": {
+              "type": "integer",
+              "title": "Start",
+              "description": "开始时间（微秒）"
+            },
+            "end": {
+              "type": "integer",
+              "title": "End",
+              "description": "结束时间（微秒）"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "start",
+            "end"
+          ],
+          "title": "SegmentInfoItem",
+          "description": "轨道数据项"
+        },
+        "ShadowInfo": {
+          "properties": {
+            "shadow_alpha": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Shadow Alpha",
+              "description": "阴影不透明度, 取值范围为[0, 1]",
+              "default": 1
+            },
+            "shadow_color": {
+              "type": "string",
+              "title": "Shadow Color",
+              "description": "阴影颜色（十六进制）",
+              "default": "#000000"
+            },
+            "shadow_diffuse": {
+              "type": "number",
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Shadow Diffuse",
+              "description": "阴影扩散程度, 取值范围为[0, 100]",
+              "default": 15
+            },
+            "shadow_distance": {
+              "type": "number",
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Shadow Distance",
+              "description": "阴影距离, 取值范围为[0, 100]",
+              "default": 5
+            },
+            "shadow_angle": {
+              "type": "number",
+              "maximum": 180,
+              "minimum": -180,
+              "title": "Shadow Angle",
+              "description": "阴影角度, 取值范围为[-180, 180]",
+              "default": -45
+            }
+          },
+          "type": "object",
+          "title": "ShadowInfo",
+          "description": "文本阴影参数"
+        },
+        "StickerInfo": {
+          "properties": {
+            "large_image": {
+              "$ref": "#/components/schemas/LargeImage"
+            },
+            "preview_cover": {
+              "type": "string",
+              "title": "Preview Cover",
+              "description": "预览封面"
+            },
+            "sticker_package": {
+              "$ref": "#/components/schemas/StickerPackage"
+            },
+            "sticker_type": {
+              "type": "integer",
+              "title": "Sticker Type",
+              "description": "贴纸类型"
+            },
+            "track_thumbnail": {
+              "type": "string",
+              "title": "Track Thumbnail",
+              "description": "轨道缩略图"
+            }
+          },
+          "type": "object",
+          "required": [
+            "large_image",
+            "preview_cover",
+            "sticker_package",
+            "sticker_type",
+            "track_thumbnail"
+          ],
+          "title": "StickerInfo",
+          "description": "贴纸信息"
+        },
+        "StickerItem": {
+          "properties": {
+            "sticker": {
+              "$ref": "#/components/schemas/StickerInfo"
+            },
+            "sticker_id": {
+              "type": "string",
+              "title": "Sticker Id",
+              "description": "贴纸ID"
+            },
+            "title": {
+              "type": "string",
+              "title": "Title",
+              "description": "贴纸标题"
+            }
+          },
+          "type": "object",
+          "required": [
+            "sticker",
+            "sticker_id",
+            "title"
+          ],
+          "title": "StickerItem",
+          "description": "贴纸项"
+        },
+        "StickerPackage": {
+          "properties": {
+            "height_per_frame": {
+              "type": "integer",
+              "title": "Height Per Frame",
+              "description": "每帧高度"
+            },
+            "size": {
+              "type": "integer",
+              "title": "Size",
+              "description": "贴纸包大小"
+            },
+            "width_per_frame": {
+              "type": "integer",
+              "title": "Width Per Frame",
+              "description": "每帧宽度"
+            }
+          },
+          "type": "object",
+          "required": [
+            "height_per_frame",
+            "size",
+            "width_per_frame"
+          ],
+          "title": "StickerPackage",
+          "description": "贴纸包信息"
+        },
+        "StrListToObjsItem": {
+          "properties": {
+            "output": {
+              "type": "string",
+              "title": "Output",
+              "description": "URL地址"
+            }
+          },
+          "type": "object",
+          "required": [
+            "output"
+          ],
+          "title": "StrListToObjsItem",
+          "description": "字符串列表转对象列表项"
+        },
+        "StrListToObjsRequest": {
+          "properties": {
+            "infos": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Infos",
+              "description": "字符串列表"
+            }
+          },
+          "type": "object",
+          "required": [
+            "infos"
+          ],
+          "title": "StrListToObjsRequest",
+          "description": "字符串列表转对象列表请求参数"
+        },
+        "StrListToObjsResponse": {
+          "properties": {
+            "infos": {
+              "items": {
+                "$ref": "#/components/schemas/StrListToObjsItem"
+              },
+              "type": "array",
+              "title": "Infos",
+              "description": "对象列表"
+            }
+          },
+          "type": "object",
+          "required": [
+            "infos"
+          ],
+          "title": "StrListToObjsResponse",
+          "description": "字符串列表转对象列表响应参数"
+        },
+        "StrToListRequest": {
+          "properties": {
+            "obj": {
+              "type": "string",
+              "title": "Obj",
+              "description": "对象内容"
+            }
+          },
+          "type": "object",
+          "required": [
+            "obj"
+          ],
+          "title": "StrToListRequest",
+          "description": "字符转列表请求参数"
+        },
+        "StrToListResponse": {
+          "properties": {
+            "infos": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Infos",
+              "description": "字符串列表"
+            }
+          },
+          "type": "object",
+          "required": [
+            "infos"
+          ],
+          "title": "StrToListResponse",
+          "description": "字符转列表响应参数"
+        },
+        "TextAnimationItem": {
+          "properties": {
+            "resource_id": {
+              "type": "string",
+              "title": "Resource Id",
+              "description": "动画资源ID"
+            },
+            "type": {
+              "type": "string",
+              "title": "Type",
+              "description": "动画类型"
+            },
+            "category_id": {
+              "type": "string",
+              "title": "Category Id",
+              "description": "动画分类ID"
+            },
+            "category_name": {
+              "type": "string",
+              "title": "Category Name",
+              "description": "动画分类名称"
+            },
+            "duration": {
+              "type": "integer",
+              "title": "Duration",
+              "description": "动画时长（微秒）"
+            },
+            "id": {
+              "type": "string",
+              "title": "Id",
+              "description": "动画唯一标识ID"
+            },
+            "name": {
+              "type": "string",
+              "title": "Name",
+              "description": "动画名称"
+            },
+            "request_id": {
+              "type": "string",
+              "title": "Request Id",
+              "description": "请求ID",
+              "default": ""
+            },
+            "start": {
+              "type": "integer",
+              "title": "Start",
+              "description": "动画开始时间",
+              "default": 0
+            },
+            "icon_url": {
+              "type": "string",
+              "title": "Icon Url",
+              "description": "动画图标URL"
+            },
+            "material_type": {
+              "type": "string",
+              "title": "Material Type",
+              "description": "素材类型",
+              "default": "sticker"
+            },
+            "panel": {
+              "type": "string",
+              "title": "Panel",
+              "description": "面板信息",
+              "default": ""
+            },
+            "path": {
+              "type": "string",
+              "title": "Path",
+              "description": "路径信息",
+              "default": ""
+            },
+            "platform": {
+              "type": "string",
+              "title": "Platform",
+              "description": "支持平台",
+              "default": "all"
+            }
+          },
+          "type": "object",
+          "required": [
+            "resource_id",
+            "type",
+            "category_id",
+            "category_name",
+            "duration",
+            "id",
+            "name",
+            "icon_url"
+          ],
+          "title": "TextAnimationItem",
+          "description": "单个文字动画项的数据模型"
+        },
+        "TimelineItem-Input": {
+          "properties": {
+            "start": {
+              "type": "integer",
+              "title": "Start",
+              "description": "开始时间（微秒）"
+            },
+            "end": {
+              "type": "integer",
+              "title": "End",
+              "description": "结束时间（微秒）"
+            }
+          },
+          "type": "object",
+          "required": [
+            "start",
+            "end"
+          ],
+          "title": "TimelineItem",
+          "description": "时间线项"
+        },
+        "TimelinesRequest": {
+          "properties": {
+            "duration": {
+              "type": "integer",
+              "title": "Duration",
+              "description": "总时长"
+            },
+            "num": {
+              "type": "integer",
+              "title": "Num",
+              "description": "时间线的个数，值为2即表示将总时长分为2个小段"
+            },
+            "start": {
+              "type": "integer",
+              "title": "Start",
+              "description": "开始时间"
+            },
+            "type": {
+              "type": "integer",
+              "title": "Type",
+              "description": "0: 平均分，1：随机"
+            }
+          },
+          "type": "object",
+          "required": [
+            "duration",
+            "num",
+            "start",
+            "type"
+          ],
+          "title": "TimelinesRequest",
+          "description": "时间线请求参数"
+        },
+        "TimelinesResponse": {
+          "properties": {
+            "timelines": {
+              "items": {
+                "$ref": "#/components/schemas/src__schemas__timelines__TimelineItem"
+              },
+              "type": "array",
+              "title": "Timelines",
+              "description": "分割后的时间线列表"
+            },
+            "all_timelines": {
+              "items": {
+                "$ref": "#/components/schemas/src__schemas__timelines__TimelineItem"
+              },
+              "type": "array",
+              "title": "All Timelines",
+              "description": "完整的时间线列表"
+            }
+          },
+          "type": "object",
+          "required": [
+            "timelines",
+            "all_timelines"
+          ],
+          "title": "TimelinesResponse",
+          "description": "时间线响应参数"
+        },
+        "ValidationError": {
+          "properties": {
+            "loc": {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              },
+              "type": "array",
+              "title": "Location"
+            },
+            "msg": {
+              "type": "string",
+              "title": "Message"
+            },
+            "type": {
+              "type": "string",
+              "title": "Error Type"
+            }
+          },
+          "type": "object",
+          "required": [
+            "loc",
+            "msg",
+            "type"
+          ],
+          "title": "ValidationError"
+        },
+        "VideoInfosRequest": {
+          "properties": {
+            "video_urls": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Video Urls",
+              "description": "视频列表"
+            },
+            "timelines": {
+              "items": {
+                "$ref": "#/components/schemas/TimelineItem-Input"
+              },
+              "type": "array",
+              "title": "Timelines",
+              "description": "时间线数组"
+            },
+            "height": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Height",
+              "description": "视频高"
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Width",
+              "description": "视频宽"
+            },
+            "mask": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Mask",
+              "description": "视频蒙版，可填写值：圆形，矩形，爱心，星形"
+            },
+            "transition": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Transition",
+              "description": "转场名称"
+            },
+            "transition_duration": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Transition Duration",
+              "description": "转场时长，整数"
+            },
+            "volume": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Volume",
+              "description": "float类型，音量大小，0-10,默认1",
+              "default": 1
+            }
+          },
+          "type": "object",
+          "required": [
+            "video_urls",
+            "timelines"
+          ],
+          "title": "VideoInfosRequest",
+          "description": "视频信息请求参数"
+        },
+        "VideoInfosResponse": {
+          "properties": {
+            "infos": {
+              "type": "string",
+              "title": "Infos",
+              "description": "JSON字符串格式的视频信息"
+            }
+          },
+          "type": "object",
+          "required": [
+            "infos"
+          ],
+          "title": "VideoInfosResponse",
+          "description": "视频信息响应参数"
+        },
+        "src__schemas__add_captions__SegmentInfo": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "title": "Id",
+              "description": "片段ID"
+            },
+            "start": {
+              "type": "integer",
+              "title": "Start",
+              "description": "片段开始时间（微秒）"
+            },
+            "end": {
+              "type": "integer",
+              "title": "End",
+              "description": "片段结束时间（微秒）"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "start",
+            "end"
+          ],
+          "title": "SegmentInfo",
+          "description": "片段信息"
+        },
+        "src__schemas__add_images__SegmentInfo": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "title": "Id",
+              "description": "片段ID"
+            },
+            "start": {
+              "type": "integer",
+              "title": "Start",
+              "description": "开始时间(微秒)"
+            },
+            "end": {
+              "type": "integer",
+              "title": "End",
+              "description": "结束时间(微秒)"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "start",
+            "end"
+          ],
+          "title": "SegmentInfo",
+          "description": "片段信息"
+        },
+        "src__schemas__audio_timelines__TimelineItem": {
+          "properties": {
+            "start": {
+              "type": "integer",
+              "title": "Start",
+              "description": "开始时间（微秒）"
+            },
+            "end": {
+              "type": "integer",
+              "title": "End",
+              "description": "结束时间（微秒）"
+            }
+          },
+          "type": "object",
+          "required": [
+            "start",
+            "end"
+          ],
+          "title": "TimelineItem",
+          "description": "时间线项"
+        },
+        "src__schemas__timelines__TimelineItem": {
+          "properties": {
+            "start": {
+              "type": "integer",
+              "title": "Start",
+              "description": "开始时间"
+            },
+            "end": {
+              "type": "integer",
+              "title": "End",
+              "description": "结束时间"
+            }
+          },
+          "type": "object",
+          "required": [
+            "start",
+            "end"
+          ],
+          "title": "TimelineItem",
+          "description": "时间线项"
+        }
+      }
+    }
+  }

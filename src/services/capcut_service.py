@@ -4,7 +4,7 @@ import shutil
 import tempfile
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 import requests
 from loguru import logger
@@ -15,7 +15,13 @@ class CapCutService:
 
     def __init__(self, config: Dict[str, Any], file_server=None):
         self.config = config["capcut"]
-        self.api_url = self.config["api_url"]
+        self.api_url = self._resolve_env_value(self.config["api_url"]).rstrip("/")
+        if not self.api_url:
+            raise ValueError("capcut.api_url 未配置或为空")
+
+        cloud_render_config = (self.config.get("cloud_render") or {})
+        cloud_api_url = self._resolve_env_value(cloud_render_config.get("api_url", ""))
+        self.cloud_api_url = cloud_api_url.rstrip("/") if cloud_api_url else self.api_url
         self.timeout = self.config.get("timeout", 30)
         self.draft_root = Path(self.config["draft_root"]).expanduser()
         self.draft_url = None  # 保存当前草稿 URL
@@ -24,23 +30,62 @@ class CapCutService:
         self.file_server = file_server  # 本地文件服务器
         logger.info(f"CapCut-mate API 客户端初始化完成: {self.api_url}")
 
-    def _request(self, endpoint: str, method: str = "POST", data: Dict = None) -> Dict:
+    @staticmethod
+    def _resolve_env_value(value: Any) -> str:
+        text = str(value or "").strip()
+        if text.startswith("${") and text.endswith("}"):
+            env_var = text[2:-1]
+            text = str(os.getenv(env_var) or "").strip()
+        return text
+
+    def _request(
+        self,
+        endpoint: str,
+        method: str = "POST",
+        data: Dict = None,
+        base_url: Optional[str] = None,
+        tolerated_error_codes: Optional[List[int]] = None,
+    ) -> Dict:
         """发送 API 请求"""
-        url = f"{self.api_url}{endpoint}"
+        api_base = (base_url or self.api_url).rstrip("/")
+        url = f"{api_base}{endpoint}"
         try:
+            payload = data or {}
             if method == "POST":
-                response = requests.post(url, json=data, timeout=self.timeout)
+                response = requests.post(url, json=payload, timeout=self.timeout)
             else:
-                response = requests.get(url, params=data, timeout=self.timeout)
+                response = requests.get(url, params=payload, timeout=self.timeout)
 
             response.raise_for_status()
             result = response.json()
 
-            # 检查响应状态码
-            if result.get("code") != 0:
-                error_msg = result.get("message", "未知错误")
-                logger.error(f"API 返回错误 [{endpoint}]: {error_msg}")
-                raise ValueError(f"API 错误: {error_msg}")
+            # 兼容两种响应风格：
+            # 1) capcut-mate ResponseMiddleware 统一封装：{code,message,...data}
+            # 2) 文档示例/未封装：直接返回 data（错误时常见 {"detail": "..."}）
+            if isinstance(result, dict):
+                if "code" in result:
+                    code = result.get("code")
+                    try:
+                        code = int(code)
+                    except (TypeError, ValueError):
+                        pass
+
+                    if code != 0:
+                        tolerated = set(tolerated_error_codes or [])
+                        if isinstance(code, int) and code in tolerated:
+                            logger.warning(
+                                f"API 返回可容忍状态 [{endpoint}]: code={code} "
+                                f"message={result.get('message') or result.get('detail') or ''}"
+                            )
+                            return result
+                        error_msg = result.get("message") or result.get("detail") or "未知错误"
+                        logger.error(f"API 返回错误 [{endpoint}]: code={code} message={error_msg}")
+                        raise ValueError(f"API 错误: {error_msg}")
+                elif "detail" in result:
+                    # 非统一封装时的错误字段
+                    detail = result.get("detail") or "未知错误"
+                    logger.error(f"API 返回错误 [{endpoint}]: {detail}")
+                    raise ValueError(f"API 错误: {detail}")
 
             logger.debug(f"API 响应 [{endpoint}]: {result}")
             return result
@@ -63,6 +108,25 @@ class CapCutService:
             raise ValueError(f"无法从 URL 中提取 draft_id: {draft_url}")
         return draft_id
 
+    def _to_external_draft_url(self, draft_url: str) -> str:
+        """
+        将本地 draft_url 映射为对外可访问 URL（优先 cloud_render.draft_url_base）。
+        不影响内部请求，仅用于展示与元数据输出。
+        """
+        draft_id = self._extract_draft_id(draft_url)
+        cloud_cfg = (self.config.get("cloud_render") or {})
+        base = self._resolve_env_value(cloud_cfg.get("draft_url_base", ""))
+        if not base:
+            base = self.cloud_api_url
+
+        parsed = urlparse(base)
+        path = parsed.path or ""
+        if path in {"", "/"}:
+            parsed = parsed._replace(path="/openapi/capcut-mate/v1/get_draft")
+        parsed = parsed._replace(query="", fragment="")
+        cleaned_base = urlunparse(parsed).rstrip("?")
+        return f"{cleaned_base}?{urlencode({'draft_id': draft_id})}"
+
     def _is_draft_in_local_root(self, draft_id: str) -> bool:
         """检查草稿是否已落地到本机剪映草稿目录"""
         if not draft_id:
@@ -77,8 +141,17 @@ class CapCutService:
         response = requests.get(self.draft_url, timeout=self.timeout)
         response.raise_for_status()
         result = response.json()
-        if result.get("code") != 0:
-            raise ValueError(f"获取草稿详情失败: {result}")
+        if isinstance(result, dict):
+            if "code" in result:
+                code = result.get("code")
+                try:
+                    code = int(code)
+                except (TypeError, ValueError):
+                    pass
+                if code != 0:
+                    raise ValueError(f"获取草稿详情失败: {result}")
+            if "detail" in result:
+                raise ValueError(f"获取草稿详情失败: {result}")
 
         files = result.get("files", [])
         if not files:
@@ -501,7 +574,7 @@ class CapCutService:
             "draft_url": self.draft_url
         })
 
-        # 返回 draft_url 作为草稿路径
+        # 对外展示保留本地可访问 draft_url；云渲染查询时再按 cloud_render.draft_url_base 重写
         logger.info(f"草稿保存成功: {self.draft_url}")
 
         sync_enabled = self.config.get("sync_to_local_draft", True)
@@ -550,6 +623,54 @@ class CapCutService:
             "draft_id": self.draft_id
         })
         return result
+
+    def gen_video(self, draft_url: Optional[str] = None, api_key: Optional[str] = None) -> Dict:
+        """
+        提交云渲染任务（异步）。
+
+        Args:
+            draft_url: 草稿 URL，默认使用当前实例保存的 draft_url
+            api_key: 可选 API Key（映射到 capcut-mate 的 apiKey 字段）
+
+        Returns:
+            Dict: 接口响应
+        """
+        target_draft_url = draft_url or self.draft_url
+        if not target_draft_url:
+            raise ValueError("请先创建并保存草稿，或显式传入 draft_url")
+
+        payload: Dict[str, Any] = {"draft_url": target_draft_url}
+        if api_key:
+            payload["apiKey"] = api_key
+
+        logger.info("提交云渲染任务")
+        return self._request(
+            "/openapi/capcut-mate/v1/gen_video",
+            data=payload,
+            base_url=self.cloud_api_url,
+        )
+
+    def gen_video_status(self, draft_url: Optional[str] = None, tolerate_not_found: bool = False) -> Dict:
+        """
+        查询云渲染任务状态。
+
+        Args:
+            draft_url: 草稿 URL，默认使用当前实例保存的 draft_url
+
+        Returns:
+            Dict: 状态响应（status/progress/video_url 等）
+        """
+        target_draft_url = draft_url or self.draft_url
+        if not target_draft_url:
+            raise ValueError("请先创建并保存草稿，或显式传入 draft_url")
+
+        logger.debug("查询云渲染状态")
+        return self._request(
+            "/openapi/capcut-mate/v1/gen_video_status",
+            data={"draft_url": target_draft_url},
+            base_url=self.cloud_api_url,
+            tolerated_error_codes=[2031] if tolerate_not_found else None,
+        )
 
     def add_video_material(
         self,
